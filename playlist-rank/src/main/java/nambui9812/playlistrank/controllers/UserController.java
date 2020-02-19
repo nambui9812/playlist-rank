@@ -39,6 +39,27 @@ public class UserController {
   User updateUser(@RequestBody User newUser) {
     User existing = userRepository.findById(newUser.getId()).orElseThrow(() -> new Error());
 
+    existing.setFirstName(newUser.getFirstName());
+    existing.setLastName(newUser.getLastName());
+    existing.setEmail(newUser.getEmail());
+    existing.setUsername(newUser.getUsername());
+    existing.setPassword(newUser.getPassword());
+    existing.setDateOfBirth(newUser.getDateOfBirth());
+    existing.setMonthOfBirth(newUser.getMonthOfBirth());
+    existing.setYearOfBirth(newUser.getYearOfBirth());
+    existing.setStreet(newUser.getStreet());
+    existing.setOptionalStreet(newUser.getOptionalStreet());
+    existing.setCity(newUser.getCity());
+    existing.setProvince(newUser.getProvince());
+    existing.setCountry(newUser.getCountry());
+    existing.setZipcode(newUser.getZipcode());
+    existing.setPhone(newUser.getPhone());
+    existing.setStatus(newUser.getStatus());
+    existing.setFollowingList(newUser.getFollowingList());
+    existing.setFollowerList(newUser.getFollowerList());
+    existing.setFollowRequests(newUser.getFollowRequests());
+    existing.setAccountType(newUser.getAccountType());
+
     return userRepository.save(existing);
   }
 
