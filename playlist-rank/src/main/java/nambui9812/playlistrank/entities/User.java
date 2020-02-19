@@ -6,6 +6,7 @@ import lombok.Data;
 
 import org.springframework.data.annotation.Id;
 
+@Data
 class User {
   private @Id String id;
   private String firtsName;
@@ -75,5 +76,90 @@ class User {
     this.followerList = followerList;
     this.followRequests = followRequests;
     this.accountType = accountType;
+  }
+
+  // All get methods
+  public String getId() {
+    return id;
+  }
+
+  public String getFirstName() {
+    return firtsName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public String getDateOfBirth() {
+    return dateOfBirth;
+  }
+
+  public String getMonthOfBirth() {
+    return monthOfBirth;
+  }
+
+  public String getYearOfBirth() {
+    return yearOfBirth;
+  }
+
+  public String getStreet() {
+    return street;
+  }
+
+  public String getOptionalStreet() {
+    return optionalStreet;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public String getProvince() {
+    return province;
+  }
+
+  public String getCountry() {
+    return country;
+  }
+
+  public String getZipcode() {
+    return zipcode;
+  }
+
+  public String getPhone() {
+    return phone;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public ArrayList<String> getFollowingList() {
+    return followingList;
+  }
+
+  public ArrayList<String> getFollowerList() {
+    return followerList;
+  }
+
+  public ArrayList<String> getFollowRequests() {
+    return followRequests;
+  }
+
+  public String getAccountType() {
+    return accountType;
   }
 }
