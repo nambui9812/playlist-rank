@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import nambui9812.playlistrank.entities.User;
 import nambui9812.playlistrank.repositories.UserRepository;
+import nambui9812.playlistrank.exceptions.UserNotFoundException;
 
 @RestController
 public class UserController {
@@ -25,7 +26,7 @@ public class UserController {
   // Get a user by id
   @GetMapping("/users/{id}")
   User getUser(@PathVariable String id) {
-    return userRepository.findById(id).orElseThrow(() -> new Error());
+    return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
   }
 
   // Create a new user
@@ -37,7 +38,7 @@ public class UserController {
   // Update a user
   @PutMapping("/users/{id}")
   User updateUser(@RequestBody User newUser) {
-    User existing = userRepository.findById(newUser.getId()).orElseThrow(() -> new Error());
+    User existing = userRepository.findById(newUser.getId()).orElseThrow(() -> new UserNotFoundException());
 
     existing.setFirstName(newUser.getFirstName());
     existing.setLastName(newUser.getLastName());
