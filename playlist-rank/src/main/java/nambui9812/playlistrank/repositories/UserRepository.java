@@ -1,8 +1,8 @@
 package nambui9812.playlistrank.repositories;
 
-import org.springframework.data.mongodb.repository.*;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-import nambui9812.playlistrank.entities.*;
+import nambui9812.playlistrank.entities.User;
 
 public interface UserRepository extends MongoRepository<User, String> {
   public User findByEmail(String email);
