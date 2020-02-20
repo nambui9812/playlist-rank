@@ -14,7 +14,7 @@ public class Playlist {
   private ArrayList<String> loves;    // List of users's username who loves this playlist
   private ArrayList<String> comments; // List of comments's id
   private ArrayList<String> shares;   // List of users's username who shares this playlist
-  private ArrayList<String> tags;     // List of tags's id
+  private ArrayList<String> tags;     // List of tags's name
   private ArrayList<String> tracks;   // List of name and author of the track
 
   // Default constructor
