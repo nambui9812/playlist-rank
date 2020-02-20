@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import nambui9812.playlistrank.exceptions.UserNotFoundException;
 
 @ControllerAdvice
-public class UserNotFoundAdvice {
+public class UserAdvice {
 
   @ResponseBody
   @ExceptionHandler(UserNotFoundException.class)
