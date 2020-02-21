@@ -3,6 +3,7 @@ package nambui9812.playlistrank.controllers;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import nambui9812.playlistrank.entities.User;
 import nambui9812.playlistrank.repositories.UserRepository;
@@ -11,10 +12,12 @@ import nambui9812.playlistrank.exceptions.UserNotFoundException;
 @RestController
 public class UserController {
   private final UserRepository userRepository;
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   // Constructor
-  public UserController(UserRepository userRepository) {
+  public UserController(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
     this.userRepository = userRepository;
+    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
   // Get all users
@@ -32,6 +35,8 @@ public class UserController {
   // Create a new user
   @PostMapping("/users")
   User createUser(@RequestBody User newUser) {
+    newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+
     return userRepository.save(newUser);
   }
 
