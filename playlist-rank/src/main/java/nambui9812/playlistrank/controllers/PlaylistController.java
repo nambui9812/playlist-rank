@@ -2,6 +2,8 @@ package nambui9812.playlistrank.controllers;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import nambui9812.playlistrank.entities.Playlist;
@@ -9,6 +11,7 @@ import nambui9812.playlistrank.repositories.PlaylistRepository;
 import nambui9812.playlistrank.exceptions.PlaylistNotFoundException;
 
 @RestController
+@RequestMapping("/playlists")
 public class PlaylistController {
   private final PlaylistRepository playlistRepository;
 
@@ -18,26 +21,32 @@ public class PlaylistController {
   }
 
   // Get all playlists
-  @GetMapping("/playlists")
-  List<Playlist> getAllPlaylists() {
-    return playlistRepository.findAll();
+  @GetMapping("/")
+  ResponseEntity<List<Playlist>> getAllPlaylists() {
+    List<Playlist> playlists = playlistRepository.findAll();
+
+    return ResponseEntity.status(HttpStatus.OK).body(playlists);
   }
 
   // Get a playlist by id
-  @GetMapping("/playlists/{id}")
-  Playlist getPlaylist(@PathVariable String id) {
-    return playlistRepository.findById(id).orElseThrow(() -> new PlaylistNotFoundException());
+  @GetMapping("/{id}")
+  ResponseEntity<Playlist> getPlaylist(@PathVariable String id) {
+    Playlist playlist = playlistRepository.findById(id).orElseThrow(() -> new PlaylistNotFoundException());
+
+    return ResponseEntity.status(HttpStatus.OK).body(playlist);
   }
 
   // Create a new playlist
-  @PostMapping("/playlists")
-  Playlist createPlaylist(@RequestBody Playlist newPlaylist) {
-    return playlistRepository.save(newPlaylist);
+  @PostMapping("/")
+  ResponseEntity<Playlist> createPlaylist(@RequestBody Playlist newPlaylist) {
+    playlistRepository.save(newPlaylist);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(newPlaylist);
   }
 
   // Update a playlist
-  @PutMapping("/playlists/{id}")
-  Playlist updatePlaylist(@RequestBody Playlist newPlaylist) {
+  @PutMapping("/{id}")
+  ResponseEntity<Playlist> updatePlaylist(@RequestBody Playlist newPlaylist) {
     Playlist existing = playlistRepository.findById(newPlaylist.getId()).orElseThrow(() -> new PlaylistNotFoundException());
 
     existing.setDescription(newPlaylist.getDescription());
@@ -46,11 +55,13 @@ public class PlaylistController {
     existing.setShares(newPlaylist.getShares());
     existing.setTags(newPlaylist.getTags());    
 
-    return playlistRepository.save(existing);
+    playlistRepository.save(existing);
+
+    return ResponseEntity.status(HttpStatus.OK).body(existing);
   }
 
   // Delete a playlist
-  @DeleteMapping("/playlists/{id}")
+  @DeleteMapping("/{id}")
   void deletePlaylist(@PathVariable String id) {
     playlistRepository.deleteById(id);
   }

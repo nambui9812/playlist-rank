@@ -3,6 +3,8 @@ package nambui9812.playlistrank.controllers;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import nambui9812.playlistrank.entities.User;
@@ -10,6 +12,7 @@ import nambui9812.playlistrank.repositories.UserRepository;
 import nambui9812.playlistrank.exceptions.UserNotFoundException;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
   private final UserRepository userRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -21,28 +24,34 @@ public class UserController {
   }
 
   // Get all users
-  @GetMapping("/users")
-  List<User> getAllUsers() {
-    return userRepository.findAll();
+  @GetMapping("/")
+  ResponseEntity<List<User>> getAllUsers() {
+    List<User> users = userRepository.findAll();
+
+    return ResponseEntity.status(HttpStatus.OK).body(users);
   }
 
   // Get a user by id
-  @GetMapping("/users/{id}")
-  User getUser(@PathVariable String id) {
-    return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
+  @GetMapping("/{id}")
+  ResponseEntity<User> getUser(@PathVariable String id) {
+    User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
+
+    return ResponseEntity.status(HttpStatus.OK).body(user);
   }
 
   // Create a new user
-  @PostMapping("/users")
-  User createUser(@RequestBody User newUser) {
+  @PostMapping("/sign-up")
+  ResponseEntity<User> createUser(@RequestBody User newUser) {
     newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 
-    return userRepository.save(newUser);
+    userRepository.save(newUser);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
   }
 
   // Update a user
-  @PutMapping("/users/{id}")
-  User updateUser(@RequestBody User newUser) {
+  @PutMapping("/update/{id}")
+  ResponseEntity<User> updateUser(@RequestBody User newUser) {
     User existing = userRepository.findById(newUser.getId()).orElseThrow(() -> new UserNotFoundException());
 
     existing.setFirstName(newUser.getFirstName());
@@ -66,11 +75,11 @@ public class UserController {
     existing.setFollowRequests(newUser.getFollowRequests());
     existing.setAccountType(newUser.getAccountType());
 
-    return userRepository.save(existing);
+    return ResponseEntity.status(HttpStatus.OK).body(existing);
   }
 
   // Delete a user
-  @DeleteMapping("/users/{id}")
+  @DeleteMapping("/{id}")
   void deleteUser(@PathVariable String id) {
     userRepository.deleteById(id);
   }
