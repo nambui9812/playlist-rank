@@ -8,25 +8,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import nambui9812.playlistrank.entities.WebsiteUser;
-import nambui9812.playlistrank.repositories.WebsiteUserRepository;
-import nambui9812.playlistrank.exceptions.WebsiteUserNotFoundException;
+import nambui9812.playlistrank.services.impl.WebsiteUserServiceImpl;
 
 @RestController
 @RequestMapping("/users")
 public class WebsiteUserController {
-  private final WebsiteUserRepository websiteUserRepository;
+  private final WebsiteUserServiceImpl websiteUserServiceImpl;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   // Constructor
-  public WebsiteUserController(WebsiteUserRepository websiteUserRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-    this.websiteUserRepository = websiteUserRepository;
+  public WebsiteUserController(WebsiteUserServiceImpl websiteUserServiceImpl, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    this.websiteUserServiceImpl = websiteUserServiceImpl;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
   // Get all users
   @GetMapping("/")
   ResponseEntity<List<WebsiteUser>> getAllUsers() {
-    List<WebsiteUser> users = websiteUserRepository.findAll();
+    List<WebsiteUser> users = websiteUserServiceImpl.findAll();
 
     return ResponseEntity.status(HttpStatus.OK).body(users);
   }
@@ -34,7 +33,7 @@ public class WebsiteUserController {
   // Get a user by id
   @GetMapping("/{id}")
   ResponseEntity<WebsiteUser> getUser(@PathVariable String id) {
-    WebsiteUser user = websiteUserRepository.findById(id).orElseThrow(() -> new WebsiteUserNotFoundException());
+    WebsiteUser user = websiteUserServiceImpl.findById(id);
 
     return ResponseEntity.status(HttpStatus.OK).body(user);
   }
@@ -44,7 +43,7 @@ public class WebsiteUserController {
   ResponseEntity<WebsiteUser> createUser(@RequestBody WebsiteUser newUser) {
     newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 
-    websiteUserRepository.save(newUser);
+    websiteUserServiceImpl.saveOrUpdateWebsiteUser(newUser);;
 
     return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
   }
@@ -52,7 +51,7 @@ public class WebsiteUserController {
   // Update a user
   @PutMapping("/update/{id}")
   ResponseEntity<WebsiteUser> updateUser(@RequestBody WebsiteUser newUser) {
-    WebsiteUser existing = websiteUserRepository.findById(newUser.getId()).orElseThrow(() -> new WebsiteUserNotFoundException());
+    WebsiteUser existing = websiteUserServiceImpl.findById(newUser.getId());
 
     existing.setFirstName(newUser.getFirstName());
     existing.setLastName(newUser.getLastName());
@@ -75,12 +74,14 @@ public class WebsiteUserController {
     existing.setFollowRequests(newUser.getFollowRequests());
     existing.setAccountType(newUser.getAccountType());
 
+    websiteUserServiceImpl.saveOrUpdateWebsiteUser(existing);
+
     return ResponseEntity.status(HttpStatus.OK).body(existing);
   }
 
   // Delete a user
   @DeleteMapping("/{id}")
   void deleteUser(@PathVariable String id) {
-    websiteUserRepository.deleteById(id);
+    websiteUserServiceImpl.deleteWebsiteUser(id);
   }
 }
