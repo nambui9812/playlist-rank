@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@Document(collection = "playlists")
 public class Playlist {
   private @Id String id;
   private String authorUsername;      // Name of person who creates this playlist

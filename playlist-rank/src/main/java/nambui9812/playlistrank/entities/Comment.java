@@ -3,8 +3,10 @@ package nambui9812.playlistrank.entities;
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@Document(collection = "comments")
 public class Comment {
   private @Id String id;
   private String authorUsername;

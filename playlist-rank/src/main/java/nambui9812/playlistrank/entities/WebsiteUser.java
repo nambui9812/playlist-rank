@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@Document(collection = "users")
 public class WebsiteUser {
   private @Id String id;
   private String firtsName;
