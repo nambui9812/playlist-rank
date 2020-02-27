@@ -1,6 +1,6 @@
 package nambui9812.playlistrank.security;
 
-import nambui9812.playlistrank.services.UserDetailsServiceImpl;
+import nambui9812.playlistrank.services.WebsiteUserDetailsServiceImpl;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,10 +18,10 @@ import static nambui9812.playlistrank.security.SecurityConstants.*;
 
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
-  private UserDetailsServiceImpl userDetailsService;
+  private WebsiteUserDetailsServiceImpl userDetailsService;
   private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-  public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+  public WebSecurity(WebsiteUserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
     this.userDetailsService = userDetailsService;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }

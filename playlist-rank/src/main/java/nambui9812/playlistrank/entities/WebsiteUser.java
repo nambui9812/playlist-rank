@@ -7,7 +7,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 @Data
-public class User {
+public class WebsiteUser {
   private @Id String id;
   private String firtsName;
   private String lastName;
@@ -31,10 +31,10 @@ public class User {
   private String accountType;
 
   // Default constructor
-  public User() {}
+  public WebsiteUser() {}
 
   // Custom constructor
-  public User(
+  public WebsiteUser(
     String firstName,
     String lastName,
     String email,

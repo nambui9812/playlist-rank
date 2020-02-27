@@ -8,19 +8,20 @@ import org.springframework.stereotype.Service;
 
 import static java.util.Collections.emptyList;
 
-import nambui9812.playlistrank.repositories.UserRepository;
+import nambui9812.playlistrank.entities.WebsiteUser;
+import nambui9812.playlistrank.repositories.WebsiteUserRepository;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
-    private final UserRepository userRepository;
+public class WebsiteUserDetailsServiceImpl implements UserDetailsService {
+    private final WebsiteUserRepository websiteUserRepository;
 
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public WebsiteUserDetailsServiceImpl(WebsiteUserRepository websiteUserRepository) {
+        this.websiteUserRepository = websiteUserRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        nambui9812.playlistrank.entities.User user = userRepository.findByUsername(username);
+        WebsiteUser user = websiteUserRepository.findByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException(username);

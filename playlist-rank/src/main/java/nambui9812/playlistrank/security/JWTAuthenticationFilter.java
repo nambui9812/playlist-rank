@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.User;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -19,7 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import nambui9812.playlistrank.entities.User;
+import nambui9812.playlistrank.entities.WebsiteUser;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static nambui9812.playlistrank.security.SecurityConstants.*;
@@ -35,7 +36,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   @Override
   public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
     try {
-      User creds = new ObjectMapper().readValue(req.getInputStream(), User.class);
+      WebsiteUser creds = new ObjectMapper().readValue(req.getInputStream(), WebsiteUser.class);
 
       return authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(  
@@ -56,7 +57,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     Authentication auth) throws IOException, ServletException {
       
       String token = JWT.create()
-        .withSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
+        .withSubject(((User) auth.getPrincipal()).getUsername())
         .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
         .sign(HMAC512(SECRET.getBytes()));
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);

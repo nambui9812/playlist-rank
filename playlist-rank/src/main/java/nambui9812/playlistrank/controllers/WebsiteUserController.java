@@ -7,52 +7,52 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import nambui9812.playlistrank.entities.User;
-import nambui9812.playlistrank.repositories.UserRepository;
-import nambui9812.playlistrank.exceptions.UserNotFoundException;
+import nambui9812.playlistrank.entities.WebsiteUser;
+import nambui9812.playlistrank.repositories.WebsiteUserRepository;
+import nambui9812.playlistrank.exceptions.WebsiteUserNotFoundException;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
-  private final UserRepository userRepository;
+public class WebsiteUserController {
+  private final WebsiteUserRepository websiteUserRepository;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   // Constructor
-  public UserController(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-    this.userRepository = userRepository;
+  public WebsiteUserController(WebsiteUserRepository websiteUserRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    this.websiteUserRepository = websiteUserRepository;
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
   // Get all users
   @GetMapping("/")
-  ResponseEntity<List<User>> getAllUsers() {
-    List<User> users = userRepository.findAll();
+  ResponseEntity<List<WebsiteUser>> getAllUsers() {
+    List<WebsiteUser> users = websiteUserRepository.findAll();
 
     return ResponseEntity.status(HttpStatus.OK).body(users);
   }
 
   // Get a user by id
   @GetMapping("/{id}")
-  ResponseEntity<User> getUser(@PathVariable String id) {
-    User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
+  ResponseEntity<WebsiteUser> getUser(@PathVariable String id) {
+    WebsiteUser user = websiteUserRepository.findById(id).orElseThrow(() -> new WebsiteUserNotFoundException());
 
     return ResponseEntity.status(HttpStatus.OK).body(user);
   }
 
   // Create a new user
   @PostMapping("/sign-up")
-  ResponseEntity<User> createUser(@RequestBody User newUser) {
+  ResponseEntity<WebsiteUser> createUser(@RequestBody WebsiteUser newUser) {
     newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 
-    userRepository.save(newUser);
+    websiteUserRepository.save(newUser);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
   }
 
   // Update a user
   @PutMapping("/update/{id}")
-  ResponseEntity<User> updateUser(@RequestBody User newUser) {
-    User existing = userRepository.findById(newUser.getId()).orElseThrow(() -> new UserNotFoundException());
+  ResponseEntity<WebsiteUser> updateUser(@RequestBody WebsiteUser newUser) {
+    WebsiteUser existing = websiteUserRepository.findById(newUser.getId()).orElseThrow(() -> new WebsiteUserNotFoundException());
 
     existing.setFirstName(newUser.getFirstName());
     existing.setLastName(newUser.getLastName());
@@ -81,6 +81,6 @@ public class UserController {
   // Delete a user
   @DeleteMapping("/{id}")
   void deleteUser(@PathVariable String id) {
-    userRepository.deleteById(id);
+    websiteUserRepository.deleteById(id);
   }
 }

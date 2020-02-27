@@ -3,15 +3,15 @@ package nambui9812.playlistrank.advices;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import nambui9812.playlistrank.exceptions.UserNotFoundException;
+import nambui9812.playlistrank.exceptions.WebsiteUserNotFoundException;
 
 @ControllerAdvice
-public class UserAdvices {
+public class WebsiteUserAdvices {
 
   @ResponseBody
-  @ExceptionHandler(UserNotFoundException.class)
+  @ExceptionHandler(WebsiteUserNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
-  String userNotFoundHandler(UserNotFoundException ex) {
+  String userNotFoundHandler(WebsiteUserNotFoundException ex) {
     return ex.getMessage();
   }
 

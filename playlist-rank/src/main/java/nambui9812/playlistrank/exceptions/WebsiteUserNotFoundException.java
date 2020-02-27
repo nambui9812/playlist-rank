@@ -1,10 +1,10 @@
 package nambui9812.playlistrank.exceptions;
 
-public class UserNotFoundException extends RuntimeException {
+public class WebsiteUserNotFoundException extends RuntimeException {
 
   private static final long serialVersionUID = 1L;
 
-  public UserNotFoundException() {
+  public WebsiteUserNotFoundException() {
     super("User not found.");
   }
 }
