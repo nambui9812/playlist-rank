@@ -2,6 +2,8 @@ package nambui9812.playlistrank.entities;
 
 import java.util.ArrayList;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
@@ -11,8 +13,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "tags")
 public class Tag {
   private @Id String id;
+
+  @NotNull(message = "Name of tag is mandatory.")
   private String name;
+
   private ArrayList<String> likes;
+
   private ArrayList<String> dislikes;
 
   // Default constructor

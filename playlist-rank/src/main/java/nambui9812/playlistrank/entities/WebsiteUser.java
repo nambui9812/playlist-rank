@@ -2,20 +2,39 @@ package nambui9812.playlistrank.entities;
 
 import java.util.ArrayList;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document(collection = "users")
 public class WebsiteUser {
   private @Id String id;
+
   private String firtsName;
   private String lastName;
+
+  @NotNull(message = "Email is mandatory.")
+  @Email(message = "Email is invalid.")
+  @Indexed(unique = true)
   private String email;
+
+  @NotNull(message = "Username is mandatory.")
+  @Size(min = 4, max = 20, message = "Username must be from 4 to 20 in size.")
+  @Indexed(unique = true)
   private String username;
+
+  @NotNull(message = "Password is mandatory.")
+  @Size(min = 10, message = "Password must be at least 10 characters in size.")
   private String password;
+
   private String dateOfBirth;
   private String monthOfBirth;
   private String yearOfBirth;
@@ -30,6 +49,9 @@ public class WebsiteUser {
   private ArrayList<String> followingList;
   private ArrayList<String> followerList;
   private ArrayList<String> followRequests;
+
+  @NotNull(message = "Account type is mandatory.")
+  @NotBlank
   private String accountType;
 
   // Default constructor

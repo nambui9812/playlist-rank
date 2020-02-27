@@ -2,6 +2,9 @@ package nambui9812.playlistrank.entities;
 
 import java.util.ArrayList;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
@@ -11,12 +14,21 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "playlists")
 public class Playlist {
   private @Id String id;
+
+  @NotNull(message = "Author username is mandatory.")
+  @NotBlank
   private String authorUsername;      // Name of person who creates this playlist
+  
   private String description;         
+  
   private ArrayList<String> loves;    // List of users's username who loves this playlist
+  
   private ArrayList<String> comments; // List of comments's id
+  
   private ArrayList<String> shares;   // List of users's username who shares this playlist
+  
   private ArrayList<String> tags;     // List of tags's name
+  
   private ArrayList<String> tracks;   // List of name and author of the track
 
   // Default constructor
