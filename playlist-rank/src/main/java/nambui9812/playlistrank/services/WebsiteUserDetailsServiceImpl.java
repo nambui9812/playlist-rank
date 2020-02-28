@@ -1,5 +1,6 @@
 package nambui9812.playlistrank.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,11 +14,8 @@ import nambui9812.playlistrank.repositories.WebsiteUserRepository;
 
 @Service
 public class WebsiteUserDetailsServiceImpl implements UserDetailsService {
-    private final WebsiteUserRepository websiteUserRepository;
-
-    public WebsiteUserDetailsServiceImpl(WebsiteUserRepository websiteUserRepository) {
-        this.websiteUserRepository = websiteUserRepository;
-    }
+    @Autowired
+    private WebsiteUserRepository websiteUserRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

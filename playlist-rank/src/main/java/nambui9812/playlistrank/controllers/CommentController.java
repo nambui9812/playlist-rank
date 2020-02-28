@@ -2,6 +2,7 @@ package nambui9812.playlistrank.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,8 @@ import nambui9812.playlistrank.exceptions.CommentNotFoundException;
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
-  private final CommentRepository commentRepository;
-
-  // Constructor
-  public CommentController(CommentRepository commentRepository) {
-    this.commentRepository = commentRepository;
-  }
+  @Autowired
+  private CommentRepository commentRepository;
 
   // Get all comments
   @GetMapping("/")

@@ -2,6 +2,7 @@ package nambui9812.playlistrank.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,8 @@ import nambui9812.playlistrank.exceptions.TagNotFoundException;
 @RestController
 @RequestMapping("/tags")
 public class TagController {
-  private final TagRepository tagsRepository;
-
-  // Constructor
-  public TagController(TagRepository tagsRepository) {
-    this.tagsRepository = tagsRepository;
-  }
+  @Autowired
+  private TagRepository tagsRepository;
 
   // Get all tags
   @GetMapping("/")

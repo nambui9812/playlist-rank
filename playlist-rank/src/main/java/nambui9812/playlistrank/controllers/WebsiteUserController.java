@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -15,12 +16,8 @@ import nambui9812.playlistrank.services.impl.WebsiteUserServiceImpl;
 @RestController
 @RequestMapping("/users")
 public class WebsiteUserController {
-  private final WebsiteUserServiceImpl websiteUserServiceImpl;
-
-  // Constructor
-  public WebsiteUserController(WebsiteUserServiceImpl websiteUserServiceImpl) {
-    this.websiteUserServiceImpl = websiteUserServiceImpl;
-  }
+  @Autowired
+  private WebsiteUserServiceImpl websiteUserServiceImpl;
 
   // Get all users
   @GetMapping("/")

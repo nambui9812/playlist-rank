@@ -2,6 +2,7 @@ package nambui9812.playlistrank.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +14,8 @@ import nambui9812.playlistrank.exceptions.PlaylistNotFoundException;
 @RestController
 @RequestMapping("/playlists")
 public class PlaylistController {
-  private final PlaylistRepository playlistRepository;
-
-  // Constructor
-  public PlaylistController(PlaylistRepository playlistRepository) {
-    this.playlistRepository = playlistRepository;
-  }
+  @Autowired
+  private PlaylistRepository playlistRepository;
 
   // Get all playlists
   @GetMapping("/")
