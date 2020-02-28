@@ -1,11 +1,13 @@
 package nambui9812.playlistrank.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import nambui9812.playlistrank.entities.WebsiteUser;
 import nambui9812.playlistrank.services.impl.WebsiteUserServiceImpl;
@@ -14,12 +16,10 @@ import nambui9812.playlistrank.services.impl.WebsiteUserServiceImpl;
 @RequestMapping("/users")
 public class WebsiteUserController {
   private final WebsiteUserServiceImpl websiteUserServiceImpl;
-  private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
   // Constructor
-  public WebsiteUserController(WebsiteUserServiceImpl websiteUserServiceImpl, BCryptPasswordEncoder bCryptPasswordEncoder) {
+  public WebsiteUserController(WebsiteUserServiceImpl websiteUserServiceImpl) {
     this.websiteUserServiceImpl = websiteUserServiceImpl;
-    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
   // Get all users
@@ -40,12 +40,29 @@ public class WebsiteUserController {
 
   // Create a new user
   @PostMapping("/sign-up")
-  ResponseEntity<WebsiteUser> createUser(@RequestBody WebsiteUser newUser) {
-    newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+  ResponseEntity<HashMap<String, Object>> createUser(@RequestBody WebsiteUser newUser) throws Exception {
+    HashMap<String, Object> res = new HashMap<>();
 
-    websiteUserServiceImpl.saveOrUpdateWebsiteUser(newUser);;
+    try {
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+      newUser = websiteUserServiceImpl.createWebsiteUser(newUser);
+
+    } catch (ConstraintViolationException e) {
+
+      HashMap<String, Object> messages = new HashMap<>();
+      e.getConstraintViolations().stream().forEach((violation) -> {
+        messages.put(violation.getPropertyPath().toString(), violation.getMessage());
+      });
+      res.put("error", true);
+      res.put("messages", messages);
+
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    res.put("message", "Create a new user successfully");
+    res.put("user", newUser);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(res);
   }
 
   // Update a user
@@ -53,30 +70,9 @@ public class WebsiteUserController {
   ResponseEntity<WebsiteUser> updateUser(@RequestBody WebsiteUser newUser) {
     WebsiteUser existing = websiteUserServiceImpl.findById(newUser.getId());
 
-    existing.setFirstName(newUser.getFirstName());
-    existing.setLastName(newUser.getLastName());
-    existing.setEmail(newUser.getEmail());
-    existing.setUsername(newUser.getUsername());
-    existing.setPassword(newUser.getPassword());
-    existing.setDateOfBirth(newUser.getDateOfBirth());
-    existing.setMonthOfBirth(newUser.getMonthOfBirth());
-    existing.setYearOfBirth(newUser.getYearOfBirth());
-    existing.setStreet(newUser.getStreet());
-    existing.setOptionalStreet(newUser.getOptionalStreet());
-    existing.setCity(newUser.getCity());
-    existing.setProvince(newUser.getProvince());
-    existing.setCountry(newUser.getCountry());
-    existing.setZipcode(newUser.getZipcode());
-    existing.setPhone(newUser.getPhone());
-    existing.setStatus(newUser.getStatus());
-    existing.setFollowingList(newUser.getFollowingList());
-    existing.setFollowerList(newUser.getFollowerList());
-    existing.setFollowRequests(newUser.getFollowRequests());
-    existing.setAccountType(newUser.getAccountType());
+    WebsiteUser updated = websiteUserServiceImpl.updateWebsiteUser(existing, newUser);
 
-    websiteUserServiceImpl.saveOrUpdateWebsiteUser(existing);
-
-    return ResponseEntity.status(HttpStatus.OK).body(existing);
+    return ResponseEntity.status(HttpStatus.OK).body(updated);
   }
 
   // Delete a user

@@ -13,7 +13,9 @@ public interface WebsiteUserService {
 
   WebsiteUser findByEmail(String email);
 
-  void saveOrUpdateWebsiteUser(WebsiteUser websiteUser);
+  WebsiteUser createWebsiteUser(WebsiteUser websiteUser);
+
+  WebsiteUser updateWebsiteUser(WebsiteUser existing, WebsiteUser newUser);
 
   void deleteWebsiteUser(String id);
 }
