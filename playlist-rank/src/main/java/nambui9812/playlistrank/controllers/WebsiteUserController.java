@@ -32,7 +32,7 @@ public class WebsiteUserController {
 
   // Get a user by id
   @GetMapping("/{id}")
-  ResponseEntity<WebsiteUser> getUser(@PathVariable String id) {
+  ResponseEntity<Object> getUser(@PathVariable String id) {
     WebsiteUser user = websiteUserServiceImpl.findById(id);
 
     return ResponseEntity.status(HttpStatus.OK).body(user);
@@ -40,7 +40,7 @@ public class WebsiteUserController {
 
   // Create a new user
   @PostMapping("/sign-up")
-  ResponseEntity<HashMap<String, Object>> createUser(@RequestBody WebsiteUser newUser) throws Exception {
+  ResponseEntity<Object> createUser(@RequestBody WebsiteUser newUser) throws Exception {
     HashMap<String, Object> res = new HashMap<>();
 
     try {
@@ -67,7 +67,7 @@ public class WebsiteUserController {
 
   // Update a user
   @PutMapping("/update/{id}")
-  ResponseEntity<WebsiteUser> updateUser(@RequestBody WebsiteUser newUser) {
+  ResponseEntity<Object> updateUser(@RequestBody WebsiteUser newUser) {
     WebsiteUser existing = websiteUserServiceImpl.findById(newUser.getId());
 
     WebsiteUser updated = websiteUserServiceImpl.updateWebsiteUser(existing, newUser);
@@ -77,7 +77,18 @@ public class WebsiteUserController {
 
   // Delete a user
   @DeleteMapping("/{id}")
-  void deleteUser(@PathVariable String id) {
-    websiteUserServiceImpl.deleteWebsiteUser(id);
+  ResponseEntity<Object> deleteUser(@PathVariable String id) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    if (id == null) {
+      res.put("message", "Cannot delete user.");
+    }
+    else {
+      websiteUserServiceImpl.deleteWebsiteUser(id);
+
+      res.put("message", "Delete user successfully.");
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 }
