@@ -1,6 +1,5 @@
 package nambui9812.playlistrank.jwt;
 
-
 import java.io.Serializable;
 
 public class JwtResponse implements Serializable {
