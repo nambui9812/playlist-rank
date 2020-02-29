@@ -1,5 +1,6 @@
 package nambui9812.playlistrank.security;
 
+/*
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
@@ -64,3 +65,4 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
   }
 
 }
+*/

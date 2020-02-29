@@ -1,5 +1,6 @@
 package nambui9812.playlistrank.security;
 
+/*
 import com.auth0.jwt.JWT;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,3 +65,4 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
 }
+*/
