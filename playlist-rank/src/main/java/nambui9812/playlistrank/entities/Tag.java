@@ -17,6 +17,9 @@ public class Tag {
   @NotNull(message = "Name of tag is mandatory.")
   private String name;
 
+  @NotNull(message = "Playlist's id is mandatory.")
+  private String playlistId;
+
   private ArrayList<String> likes;
 
   private ArrayList<String> dislikes;
@@ -27,10 +30,12 @@ public class Tag {
   // Custom constructor
   public Tag(
     String name,
+    String playlistId,
     ArrayList<String> likes,
     ArrayList<String> dislikes
   ) {
     this.name = name;
+    this.playlistId = playlistId;
     this.likes = likes;
     this.dislikes = dislikes;
   }
@@ -42,6 +47,10 @@ public class Tag {
 
   public String getName() {
     return name;
+  }
+
+  public String getPlaylistId() {
+    return playlistId;
   }
 
   public ArrayList<String> getLikes() {

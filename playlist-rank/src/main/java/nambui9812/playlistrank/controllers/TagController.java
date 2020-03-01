@@ -1,6 +1,9 @@
 package nambui9812.playlistrank.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,55 +11,71 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import nambui9812.playlistrank.entities.Tag;
-import nambui9812.playlistrank.repositories.TagRepository;
-import nambui9812.playlistrank.exceptions.TagNotFoundException;
+import nambui9812.playlistrank.services.impl.TagServiceImpl;
 
 @RestController
 @RequestMapping("/tags")
 public class TagController {
   @Autowired
-  private TagRepository tagsRepository;
+  private TagServiceImpl tagServiceImpl;
 
   // Get all tags
   @GetMapping("/")
-  ResponseEntity<List<Tag>> getAllTags() {
-    List<Tag> tags = tagsRepository.findAll();
+  ResponseEntity<Object> getAllTags() {
+    List<Tag> tags = tagServiceImpl.findAll();
 
     return ResponseEntity.status(HttpStatus.OK).body(tags);
   }
 
   // Get a tag by id
   @GetMapping("/{id}")
-  ResponseEntity<Tag> getTag(@PathVariable String id) {
-    Tag tag = tagsRepository.findById(id).orElseThrow(() -> new TagNotFoundException());
+  ResponseEntity<Object> getTag(@PathVariable String id) {
+    Tag tag = tagServiceImpl.findById(id);
 
     return ResponseEntity.status(HttpStatus.OK).body(tag);
   }
 
   // Create a new tag
   @PostMapping("/")
-  ResponseEntity<Tag> createTag(@RequestBody Tag newTag) {
-    tagsRepository.save(newTag);
+  ResponseEntity<Object> createTag(@RequestBody Tag newTag) throws Exception {
+    HashMap<String, Object> res = new HashMap<>();
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(newTag);
-  }
+    try {
 
-  // Update a tag
-  @PutMapping("/{id}")
-  ResponseEntity<Tag> updateTag(@RequestBody Tag newTag) {
-    Tag existing = tagsRepository.findById(newTag.getId()).orElseThrow(() -> new TagNotFoundException());
+      newTag = tagServiceImpl.createTag(newTag);
 
-    existing.setLikes(newTag.getLikes());
-    existing.setDislikes(newTag.getDislikes());
+    } catch (ConstraintViolationException e) {
 
-    tagsRepository.save(existing);
+      HashMap<String, Object> messages = new HashMap<>();
+      e.getConstraintViolations().stream().forEach((violation) -> {
+        messages.put(violation.getPropertyPath().toString(), violation.getMessage());
+      });
+      res.put("error", true);
+      res.put("messages", messages);
 
-    return ResponseEntity.status(HttpStatus.OK).body(existing);
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    res.put("message", "Create a new tag successfully");
+    res.put("tag", newTag);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(res);
   }
 
   // Delete a tag
   @DeleteMapping("/{id}")
-  void deleteTag(@PathVariable String id) {
-    tagsRepository.deleteById(id);
+  ResponseEntity<Object> deleteTag(@PathVariable String id) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    if (id == null) {
+      res.put("message", "Cannot delete tag.");
+    }
+    else {
+      tagServiceImpl.deleteTag(id);
+
+      res.put("message", "Delete tag successfully.");
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 }

@@ -21,7 +21,7 @@ public class WebsiteUserController {
 
   // Get all users
   @GetMapping("/")
-  ResponseEntity<List<WebsiteUser>> getAllUsers() {
+  ResponseEntity<Object> getAllUsers() {
     List<WebsiteUser> users = websiteUserServiceImpl.findAll();
 
     return ResponseEntity.status(HttpStatus.OK).body(users);

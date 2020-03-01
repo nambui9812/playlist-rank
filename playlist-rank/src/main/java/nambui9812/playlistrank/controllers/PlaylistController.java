@@ -1,6 +1,9 @@
 package nambui9812.playlistrank.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,58 +11,81 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import nambui9812.playlistrank.entities.Playlist;
-import nambui9812.playlistrank.repositories.PlaylistRepository;
-import nambui9812.playlistrank.exceptions.PlaylistNotFoundException;
+import nambui9812.playlistrank.services.impl.PlaylistServiceImpl;
 
 @RestController
 @RequestMapping("/playlists")
 public class PlaylistController {
   @Autowired
-  private PlaylistRepository playlistRepository;
+  private PlaylistServiceImpl playlistServiceImpl;
 
   // Get all playlists
   @GetMapping("/")
-  ResponseEntity<List<Playlist>> getAllPlaylists() {
-    List<Playlist> playlists = playlistRepository.findAll();
+  ResponseEntity<Object> getAllPlaylists() {
+    List<Playlist> playlists = playlistServiceImpl.findAll();
 
     return ResponseEntity.status(HttpStatus.OK).body(playlists);
   }
 
   // Get a playlist by id
   @GetMapping("/{id}")
-  ResponseEntity<Playlist> getPlaylist(@PathVariable String id) {
-    Playlist playlist = playlistRepository.findById(id).orElseThrow(() -> new PlaylistNotFoundException());
+  ResponseEntity<Object> getPlaylist(@PathVariable String id) {
+    Playlist playlist = playlistServiceImpl.findById(id);
 
     return ResponseEntity.status(HttpStatus.OK).body(playlist);
   }
 
   // Create a new playlist
   @PostMapping("/")
-  ResponseEntity<Playlist> createPlaylist(@RequestBody Playlist newPlaylist) {
-    playlistRepository.save(newPlaylist);
+  ResponseEntity<Object> createPlaylist(@RequestBody Playlist newPlaylist) throws Exception {
+    HashMap<String, Object> res = new HashMap<>();
 
-    return ResponseEntity.status(HttpStatus.CREATED).body(newPlaylist);
+    try {
+
+      newPlaylist = playlistServiceImpl.createPlaylist(newPlaylist);
+
+    } catch (ConstraintViolationException e) {
+
+      HashMap<String, Object> messages = new HashMap<>();
+      e.getConstraintViolations().stream().forEach((violation) -> {
+        messages.put(violation.getPropertyPath().toString(), violation.getMessage());
+      });
+      res.put("error", true);
+      res.put("messages", messages);
+
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    res.put("message", "Create a new playlist successfully");
+    res.put("playlist", newPlaylist);
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(res);
   }
 
   // Update a playlist
   @PutMapping("/{id}")
-  ResponseEntity<Playlist> updatePlaylist(@RequestBody Playlist newPlaylist) {
-    Playlist existing = playlistRepository.findById(newPlaylist.getId()).orElseThrow(() -> new PlaylistNotFoundException());
+  ResponseEntity<Object> updatePlaylist(@RequestBody Playlist newPlaylist) {
+    Playlist existing = playlistServiceImpl.findById(newPlaylist.getId());
 
-    existing.setDescription(newPlaylist.getDescription());
-    existing.setLoves(newPlaylist.getLoves());
-    existing.setComments(newPlaylist.getComments());
-    existing.setShares(newPlaylist.getShares());
-    existing.setTags(newPlaylist.getTags());    
+    Playlist updated = playlistServiceImpl.updatePlaylist(existing, newPlaylist);
 
-    playlistRepository.save(existing);
-
-    return ResponseEntity.status(HttpStatus.OK).body(existing);
+    return ResponseEntity.status(HttpStatus.OK).body(updated);
   }
 
   // Delete a playlist
   @DeleteMapping("/{id}")
-  void deletePlaylist(@PathVariable String id) {
-    playlistRepository.deleteById(id);
+  ResponseEntity<Object> deletePlaylist(@PathVariable String id) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    if (id == null) {
+      res.put("message", "Cannot delete playlist.");
+    }
+    else {
+      playlistServiceImpl.deletePlaylist(id);
+
+      res.put("message", "Delete playlist successfully.");
+    }
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 }

@@ -26,6 +26,8 @@ public class Comment {
   @Size(min = 1, message = "Comment must have at least 1 character in size.")
   private String content;
 
+  private Boolean deleted;
+
   // Default constructor
   public Comment() {}
 
@@ -34,12 +36,14 @@ public class Comment {
     String authorUsername,
     String playlistId,
     String toCommentId,
-    String content
+    String content,
+    Boolean deleted
   ) {
     this.authorUsername = authorUsername;
     this.playlistId = playlistId;
     this.toCommentId = toCommentId;
     this.content = content;
+    this.deleted = deleted;
   }
 
   // All get methods
@@ -61,5 +65,17 @@ public class Comment {
 
   public String getContent() {
     return content;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
+
+  public Boolean getDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(Boolean deleted) {
+    this.deleted = deleted;
   }
 }
