@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 
 import nambui9812.playlistrank.entities.WebsiteUser;
 import nambui9812.playlistrank.services.impl.WebsiteUserServiceImpl;
+import nambui9812.playlistrank.validations.UpdateWebsiteUserValidation;
 
 @RestController
 @RequestMapping("/users")
@@ -64,10 +65,10 @@ public class WebsiteUserController {
 
   // Update a user
   @PutMapping("/update/{id}")
-  ResponseEntity<Object> updateUser(@RequestBody WebsiteUser newUser) {
-    WebsiteUser existing = websiteUserServiceImpl.findById(newUser.getId());
+  ResponseEntity<Object> updateUser(@RequestBody UpdateWebsiteUserValidation info) {
+    WebsiteUser existing = websiteUserServiceImpl.findById(info.getId());
 
-    WebsiteUser updated = websiteUserServiceImpl.updateWebsiteUser(existing, newUser);
+    WebsiteUser updated = websiteUserServiceImpl.updateWebsiteUser(existing, info);
 
     return ResponseEntity.status(HttpStatus.OK).body(updated);
   }

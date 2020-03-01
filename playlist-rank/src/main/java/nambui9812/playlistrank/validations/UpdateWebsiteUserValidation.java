@@ -1,39 +1,16 @@
-package nambui9812.playlistrank.entities;
+package nambui9812.playlistrank.validations;
 
-import java.util.ArrayList;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import lombok.Data;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 @Data
-@Document(collection = "users")
-public class WebsiteUser {
-  private @Id String id;
+public class UpdateWebsiteUserValidation {
+  @NotNull(message = "User's id is mandatory")
+  private String id;
 
   private String firstName;
   private String lastName;
-
-  @NotNull(message = "Email is mandatory.")
-  @Email(message = "Email is invalid.")
-  @Indexed(unique = true)
-  private String email;
-
-  @NotNull(message = "Username is mandatory.")
-  @Size(min = 4, max = 20, message = "Username must be from 4 to 20 in size.")
-  @Indexed(unique = true)
-  private String username;
-
-  @NotNull(message = "Password is mandatory.")
-  @Size(min = 10, message = "Password must be at least 10 characters in size.")
-  private String password;
 
   private String dateOfBirth;
   private String monthOfBirth;
@@ -46,25 +23,11 @@ public class WebsiteUser {
   private String zipcode;
   private String phone;
   private String status;
-  
-  private ArrayList<String> followingList;
-  private ArrayList<String> followerList;
-  private ArrayList<String> followRequests;
 
-  @NotNull(message = "Account type is mandatory.")
-  @NotBlank
-  private String accountType;
-
-  // Default constructor
-  public WebsiteUser() {}
-
-  // Custom constructor
-  public WebsiteUser(
+  public UpdateWebsiteUserValidation(
+    String id,
     String firstName,
     String lastName,
-    String email,
-    String username,
-    String password,
     String dateOfBirth,
     String monthOfBirth,
     String yearOfBirth,
@@ -75,17 +38,11 @@ public class WebsiteUser {
     String country,
     String zipcode,
     String phone,
-    String status,
-    ArrayList<String> followingList,
-    ArrayList<String> followerList,
-    ArrayList<String> followRequests,
-    String accountType
+    String status
   ) {
+    this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
-    this.email = email;
-    this.username = username;
-    this.password = password;
     this.dateOfBirth = dateOfBirth;
     this.monthOfBirth = monthOfBirth;
     this.yearOfBirth = yearOfBirth;
@@ -97,13 +54,8 @@ public class WebsiteUser {
     this.zipcode = zipcode;
     this.phone = phone;
     this.status = status;
-    this.followingList = followingList;
-    this.followerList = followerList;
-    this.followRequests = followRequests;
-    this.accountType = accountType;
   }
 
-  // All get methods
   public String getId() {
     return id;
   }
@@ -122,30 +74,6 @@ public class WebsiteUser {
 
   public void setLastName(String lastName) {
     this.lastName = lastName;
-  }
-
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
   }
 
   public String getDateOfBirth() {
@@ -234,37 +162,5 @@ public class WebsiteUser {
 
   public void setStatus(String status) {
     this.status = status;
-  }
-
-  public ArrayList<String> getFollowingList() {
-    return followingList;
-  }
-
-  public void setFollowingList(ArrayList<String> followingList) {
-    this.followingList = followingList;
-  }
-
-  public ArrayList<String> getFollowerList() {
-    return followerList;
-  }
-
-  public void setFollowerList(ArrayList<String> followerList) {
-    this.followerList = followerList;
-  }
-
-  public ArrayList<String> getFollowRequests() {
-    return followRequests;
-  }
-
-  public void setFollowRequests(ArrayList<String> followRequests) {
-    this.followRequests = followRequests;
-  }
-
-  public String getAccountType() {
-    return accountType;
-  }
-
-  public void setAccountType(String accountType) {
-    this.accountType = accountType;
   }
 }

@@ -3,6 +3,7 @@ package nambui9812.playlistrank.services;
 import java.util.List;
 
 import nambui9812.playlistrank.entities.WebsiteUser;
+import nambui9812.playlistrank.validations.UpdateWebsiteUserValidation;
 
 public interface WebsiteUserService {
   List<WebsiteUser> findAll();
@@ -15,7 +16,7 @@ public interface WebsiteUserService {
 
   WebsiteUser createWebsiteUser(WebsiteUser websiteUser);
 
-  WebsiteUser updateWebsiteUser(WebsiteUser existing, WebsiteUser newUser);
+  WebsiteUser updateWebsiteUser(WebsiteUser existing, UpdateWebsiteUserValidation info);
 
   void deleteWebsiteUser(String id);
 }

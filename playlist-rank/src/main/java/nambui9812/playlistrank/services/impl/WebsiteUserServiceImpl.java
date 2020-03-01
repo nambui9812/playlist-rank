@@ -11,6 +11,7 @@ import nambui9812.playlistrank.entities.WebsiteUser;
 import nambui9812.playlistrank.repositories.WebsiteUserRepository;
 import nambui9812.playlistrank.services.WebsiteUserService;
 import nambui9812.playlistrank.exceptions.WebsiteUserNotFoundException;
+import nambui9812.playlistrank.validations.UpdateWebsiteUserValidation;
 
 @Service
 public class WebsiteUserServiceImpl implements WebsiteUserService {
@@ -48,24 +49,33 @@ public class WebsiteUserServiceImpl implements WebsiteUserService {
   }
 
   @Override
-  public WebsiteUser updateWebsiteUser(WebsiteUser existing, WebsiteUser newUser) {
+  public WebsiteUser updateWebsiteUser(WebsiteUser existing, UpdateWebsiteUserValidation info) {
 
-    existing.setEmail(newUser.getEmail());
-    existing.setDateOfBirth(newUser.getDateOfBirth());
-    existing.setMonthOfBirth(newUser.getMonthOfBirth());
-    existing.setYearOfBirth(newUser.getYearOfBirth());
-    existing.setStreet(newUser.getStreet());
-    existing.setOptionalStreet(newUser.getOptionalStreet());
-    existing.setCity(newUser.getCity());
-    existing.setProvince(newUser.getProvince());
-    existing.setCountry(newUser.getCountry());
-    existing.setZipcode(newUser.getZipcode());
-    existing.setPhone(newUser.getPhone());
-    existing.setStatus(newUser.getStatus());
-    existing.setFollowingList(newUser.getFollowingList());
-    existing.setFollowerList(newUser.getFollowerList());
-    existing.setFollowRequests(newUser.getFollowRequests());
-    existing.setAccountType(newUser.getAccountType());
+    if (info.getFirstName() != null) existing.setFirstName(info.getFirstName());
+
+    if (info.getLastName() != null) existing.setLastName(info.getLastName());
+
+    if (info.getDateOfBirth() != null) existing.setDateOfBirth(info.getDateOfBirth());
+
+    if (info.getMonthOfBirth() != null) existing.setMonthOfBirth(info.getMonthOfBirth());
+
+    if (info.getYearOfBirth() != null) existing.setYearOfBirth(info.getYearOfBirth());
+
+    if (info.getStreet() != null) existing.setStreet(info.getStreet());
+
+    if (info.getOptionalStreet() != null) existing.setOptionalStreet(info.getOptionalStreet());
+
+    if (info.getCity() != null) existing.setCity(info.getCity());
+
+    if (info.getProvince() != null) existing.setProvince(info.getProvince());
+
+    if (info.getCountry() != null) existing.setCountry(info.getCountry());
+
+    if (info.getZipcode() != null) existing.setZipcode(info.getZipcode());
+
+    if (info.getPhone() != null) existing.setPhone(info.getPhone());
+
+    if (info.getStatus() != null) existing.setStatus(info.getStatus());
 
     return websiteUserRepository.save(existing);
   }
