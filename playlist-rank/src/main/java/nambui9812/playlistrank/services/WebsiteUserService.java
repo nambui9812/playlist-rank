@@ -18,5 +18,7 @@ public interface WebsiteUserService {
 
   WebsiteUser updateWebsiteUser(WebsiteUser existing, UpdateWebsiteUserValidation info);
 
+  WebsiteUser followWebsiteUser(WebsiteUser existing, WebsiteUser follow);
+
   void deleteWebsiteUser(String id);
 }

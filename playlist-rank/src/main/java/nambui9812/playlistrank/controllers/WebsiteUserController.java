@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import nambui9812.playlistrank.entities.WebsiteUser;
 import nambui9812.playlistrank.services.impl.WebsiteUserServiceImpl;
 import nambui9812.playlistrank.validations.UpdateWebsiteUserValidation;
+import nambui9812.playlistrank.validations.FollowWebsiteUserValidation;
 
 @RestController
 @RequestMapping("/users")
@@ -64,14 +65,44 @@ public class WebsiteUserController {
   }
 
   // Update a user
-  @PutMapping("/update/{id}")
+  @PutMapping("/update-info")
   ResponseEntity<Object> updateUser(@RequestBody UpdateWebsiteUserValidation info) {
+    HashMap<String, Object> res = new HashMap<>();
+
     WebsiteUser existing = websiteUserServiceImpl.findById(info.getId());
 
     WebsiteUser updated = websiteUserServiceImpl.updateWebsiteUser(existing, info);
 
-    return ResponseEntity.status(HttpStatus.OK).body(updated);
+    res.put("message", "Update user info successfully.");
+    res.put("user", updated);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
   }
+
+  // Follow a person
+  @PutMapping("/follow-user")
+  ResponseEntity<Object> followUser(@RequestBody FollowWebsiteUserValidation info) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    WebsiteUser existing = websiteUserServiceImpl.findById(info.getId());
+
+    WebsiteUser follow = websiteUserServiceImpl.findByUsername(info.getFollowUsername());
+
+    if (follow == null) {
+      res.put("message", "Invalid follow's username.");
+      res.put("error", true);
+      
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    WebsiteUser updated = websiteUserServiceImpl.followWebsiteUser(existing, follow);
+
+    res.put("message", "Follow other user successfully.");
+    res.put("user", updated);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
 
   // Delete a user
   @DeleteMapping("/{id}")
@@ -80,12 +111,13 @@ public class WebsiteUserController {
 
     if (id == null) {
       res.put("message", "Cannot delete user.");
-    }
-    else {
-      websiteUserServiceImpl.deleteWebsiteUser(id);
 
-      res.put("message", "Delete user successfully.");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
+    
+    websiteUserServiceImpl.deleteWebsiteUser(id);
+
+    res.put("message", "Delete user successfully.");
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
   }

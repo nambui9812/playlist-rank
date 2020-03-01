@@ -81,6 +81,17 @@ public class WebsiteUserServiceImpl implements WebsiteUserService {
   }
 
   @Override
+  public WebsiteUser followWebsiteUser(WebsiteUser existing, WebsiteUser follow) {
+    existing.getFollowingList().add(follow.getUsername());
+    follow.getFollowerList().add(existing.getUsername());
+
+    websiteUserRepository.save(existing);
+    websiteUserRepository.save(follow);
+
+    return existing;
+  }
+
+  @Override
   public void deleteWebsiteUser(String id) {
     websiteUserRepository.deleteById(id);
   }

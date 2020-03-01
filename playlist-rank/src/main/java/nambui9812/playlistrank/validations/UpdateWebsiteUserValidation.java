@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class UpdateWebsiteUserValidation {
-  @NotNull(message = "User's id is mandatory")
+  @NotNull(message = "User's id is mandatory.")
   private String id;
 
   private String firstName;
@@ -64,103 +64,51 @@ public class UpdateWebsiteUserValidation {
     return firstName;
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
   public String getLastName() {
     return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
   }
 
   public String getDateOfBirth() {
     return dateOfBirth;
   }
 
-  public void setDateOfBirth(String dateOfBirth) {
-    this.dateOfBirth = dateOfBirth;
-  }
-
   public String getMonthOfBirth() {
     return monthOfBirth;
-  }
-
-  public void setMonthOfBirth(String monthOfBirth) {
-    this.monthOfBirth = monthOfBirth;
   }
 
   public String getYearOfBirth() {
     return yearOfBirth;
   }
 
-  public void setYearOfBirth(String yearOfBirth) {
-    this.yearOfBirth = yearOfBirth;
-  }
-
   public String getStreet() {
     return street;
-  }
-
-  public void setStreet(String street) {
-    this.street = street;
   }
 
   public String getOptionalStreet() {
     return optionalStreet;
   }
 
-  public void setOptionalStreet(String optionalStreet) {
-    this.optionalStreet = optionalStreet;
-  }
-
   public String getCity() {
     return city;
-  }
-
-  public void setCity(String city) {
-    this.city = city;
   }
 
   public String getProvince() {
     return province;
   }
 
-  public void setProvince(String province) {
-    this.province = province;
-  }
-
   public String getCountry() {
     return country;
-  }
-
-  public void setCountry(String country) {
-    this.country = country;
   }
 
   public String getZipcode() {
     return zipcode;
   }
 
-  public void setZipcode(String zipcode) {
-    this.zipcode = zipcode;
-  }
-
   public String getPhone() {
     return phone;
   }
 
-  public void setPhone(String phone) {
-    this.phone = phone;
-  }
-
   public String getStatus() {
     return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
   }
 }
