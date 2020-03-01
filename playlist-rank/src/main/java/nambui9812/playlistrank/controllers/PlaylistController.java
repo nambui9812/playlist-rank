@@ -79,12 +79,13 @@ public class PlaylistController {
 
     if (id == null) {
       res.put("message", "Cannot delete playlist.");
-    }
-    else {
-      playlistServiceImpl.deletePlaylist(id);
 
-      res.put("message", "Delete playlist successfully.");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
+    
+    playlistServiceImpl.deletePlaylist(id);
+
+    res.put("message", "Delete playlist successfully.");
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
   }

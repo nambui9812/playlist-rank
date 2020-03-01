@@ -69,12 +69,13 @@ public class TagController {
 
     if (id == null) {
       res.put("message", "Cannot delete tag.");
-    }
-    else {
-      tagServiceImpl.deleteTag(id);
 
-      res.put("message", "Delete tag successfully.");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
+    
+    tagServiceImpl.deleteTag(id);
+
+    res.put("message", "Delete tag successfully.");
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
   }

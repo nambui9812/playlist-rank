@@ -69,12 +69,13 @@ public class CommentController {
 
     if (id == null) {
       res.put("message", "Cannot delete comment.");
-    }
-    else {
-      commentServiceImpl.deleteComment(id);
 
-      res.put("message", "Delete comment successfully.");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
+    
+    commentServiceImpl.deleteComment(id);
+
+    res.put("message", "Delete comment successfully.");
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
   }
