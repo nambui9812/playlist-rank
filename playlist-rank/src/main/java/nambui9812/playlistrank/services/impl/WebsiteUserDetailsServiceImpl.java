@@ -1,4 +1,4 @@
-package nambui9812.playlistrank.services;
+package nambui9812.playlistrank.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;

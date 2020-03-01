@@ -20,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
-import nambui9812.playlistrank.services.WebsiteUserDetailsServiceImpl;
+import nambui9812.playlistrank.services.impl.WebsiteUserDetailsServiceImpl;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {

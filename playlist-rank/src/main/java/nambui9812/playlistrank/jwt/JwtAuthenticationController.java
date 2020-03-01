@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import nambui9812.playlistrank.services.WebsiteUserDetailsServiceImpl;
+import nambui9812.playlistrank.services.impl.WebsiteUserDetailsServiceImpl;
 
 @RestController
 @CrossOrigin
