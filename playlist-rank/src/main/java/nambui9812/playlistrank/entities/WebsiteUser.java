@@ -46,10 +46,9 @@ public class WebsiteUser {
   private String zipcode;
   private String phone;
   private String status;
-  
+
   private ArrayList<String> followingList;
   private ArrayList<String> followerList;
-  private ArrayList<String> followRequests;
 
   @NotNull(message = "Account type is mandatory.")
   @NotBlank
@@ -78,7 +77,6 @@ public class WebsiteUser {
     String status,
     ArrayList<String> followingList,
     ArrayList<String> followerList,
-    ArrayList<String> followRequests,
     String accountType
   ) {
     this.firstName = firstName;
@@ -99,7 +97,6 @@ public class WebsiteUser {
     this.status = status;
     this.followingList = followingList;
     this.followerList = followerList;
-    this.followRequests = followRequests;
     this.accountType = accountType;
   }
 
@@ -250,14 +247,6 @@ public class WebsiteUser {
 
   public void setFollowerList(ArrayList<String> followerList) {
     this.followerList = followerList;
-  }
-
-  public ArrayList<String> getFollowRequests() {
-    return followRequests;
-  }
-
-  public void setFollowRequests(ArrayList<String> followRequests) {
-    this.followRequests = followRequests;
   }
 
   public String getAccountType() {
