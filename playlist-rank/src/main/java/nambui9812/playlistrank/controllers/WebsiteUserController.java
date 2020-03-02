@@ -1,6 +1,5 @@
 package nambui9812.playlistrank.controllers;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 
 import nambui9812.playlistrank.entities.WebsiteUser;
 import nambui9812.playlistrank.services.impl.WebsiteUserServiceImpl;
@@ -67,7 +67,7 @@ public class WebsiteUserController {
 
   // Update a user
   @PutMapping("/update-info")
-  ResponseEntity<Object> updateUser(@RequestBody UpdateWebsiteUserValidation info, Principal principal) {
+  ResponseEntity<Object> updateUser(@RequestBody UpdateWebsiteUserValidation info, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
     WebsiteUser existing = websiteUserServiceImpl.findById(info.getId());
@@ -76,11 +76,11 @@ public class WebsiteUserController {
     String fromExisting = existing.getUsername();
 
     // Username from token
-    String fromAuth = principal.getName();
+    String fromAuth = authentication.getName();
 
     if (!fromExisting.equals(fromAuth)) {
 
-      res.put("message", "Unauthorization for update user.");
+      res.put("message", "Unauthorization for updating user.");
       res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
@@ -96,7 +96,7 @@ public class WebsiteUserController {
 
   // Follow a person
   @PutMapping("/follow-user")
-  ResponseEntity<Object> followUser(@RequestBody FollowWebsiteUserValidation info) {
+  ResponseEntity<Object> followUser(@RequestBody FollowWebsiteUserValidation info, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
     WebsiteUser existing = websiteUserServiceImpl.findById(info.getId());
@@ -110,6 +110,20 @@ public class WebsiteUserController {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
+    // Username from id in info
+    String fromExisting = existing.getUsername();
+
+    // Username from token
+    String fromAuth = authentication.getName();
+
+    if (!fromExisting.equals(fromAuth)) {
+
+      res.put("message", "Unauthorization for following user.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
+    }
+
     WebsiteUser updated = websiteUserServiceImpl.followWebsiteUser(existing, follow);
 
     res.put("message", "Follow other user successfully.");
@@ -118,16 +132,31 @@ public class WebsiteUserController {
     return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 
-
   // Delete a user
   @DeleteMapping("/{id}")
-  ResponseEntity<Object> deleteUser(@PathVariable String id) {
+  ResponseEntity<Object> deleteUser(@PathVariable String id, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
-    if (id == null) {
-      res.put("message", "Cannot delete user.");
+    WebsiteUser existing = websiteUserServiceImpl.findById(id);
+
+    if (existing == null) {
+      res.put("message", "Cannot delete an invalid user.");
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    // Username from id in info
+    String fromExisting = existing.getUsername();
+
+    // Username from token
+    String fromAuth = authentication.getName();
+
+    if (!fromExisting.equals(fromAuth)) {
+
+      res.put("message", "Unauthorization for deleting user.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
     
     websiteUserServiceImpl.deleteWebsiteUser(id);
