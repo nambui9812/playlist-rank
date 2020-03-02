@@ -72,7 +72,10 @@ public class WebsiteUserController {
 
     WebsiteUser existing = websiteUserServiceImpl.findById(info.getId());
 
+    // Username from id in info
     String fromExisting = existing.getUsername();
+
+    // Username from token
     String fromAuth = principal.getName();
 
     if (!fromExisting.equals(fromAuth)) {
