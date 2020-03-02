@@ -1,5 +1,6 @@
 package nambui9812.playlistrank.controllers;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 
@@ -66,10 +67,21 @@ public class WebsiteUserController {
 
   // Update a user
   @PutMapping("/update-info")
-  ResponseEntity<Object> updateUser(@RequestBody UpdateWebsiteUserValidation info) {
+  ResponseEntity<Object> updateUser(@RequestBody UpdateWebsiteUserValidation info, Principal principal) {
     HashMap<String, Object> res = new HashMap<>();
 
     WebsiteUser existing = websiteUserServiceImpl.findById(info.getId());
+
+    String fromExisting = existing.getUsername();
+    String fromAuth = principal.getName();
+
+    if (!fromExisting.equals(fromAuth)) {
+
+      res.put("message", "Unauthorization for update user.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
+    }
 
     WebsiteUser updated = websiteUserServiceImpl.updateWebsiteUser(existing, info);
 
