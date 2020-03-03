@@ -46,7 +46,15 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
-  public void deleteComment(String id) {
-    commentRepository.deleteById(id);
+  public void deleteComment(Comment existing) {
+    if (existing.getToCommentId() != null && !existing.getDeleted()) {
+      existing.setContent("xX This comment has been deleted. Xx");
+      existing.setDeleted(true);
+
+      commentRepository.save(existing);
+      return;
+    }
+
+    commentRepository.deleteById(existing.getId());
   }
 }

@@ -8,6 +8,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import nambui9812.playlistrank.entities.Comment;
@@ -64,16 +65,33 @@ public class CommentController {
 
   // Delete a comment
   @DeleteMapping("/{id}")
-  ResponseEntity<Object> deleteComment(@PathVariable String id) {
+  ResponseEntity<Object> deleteComment(@PathVariable String id, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
-    if (id == null) {
-      res.put("message", "Cannot delete comment.");
+    Comment existing = commentServiceImpl.findById(id);
+
+    if (existing == null) {
+      res.put("message", "Cannot delete an invalid comment.");
+      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
+
+    // Username of owner
+    String fromExisting = existing.getAuthorUsername();
+
+    // Username from token
+    String fromAuth = authentication.getName();
+
+    if (!fromExisting.equals(fromAuth)) {
+
+      res.put("message", "Unauthorization for deleting comment.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
+    }
     
-    commentServiceImpl.deleteComment(id);
+    commentServiceImpl.deleteComment(existing);
 
     res.put("message", "Delete comment successfully.");
 

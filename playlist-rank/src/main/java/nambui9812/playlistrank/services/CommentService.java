@@ -17,5 +17,5 @@ public interface CommentService {
 
   Comment createComment(Comment comment);
 
-  void deleteComment(String id);
+  void deleteComment(Comment existing);
 }
