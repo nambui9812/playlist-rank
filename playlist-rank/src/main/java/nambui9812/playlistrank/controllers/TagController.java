@@ -8,6 +8,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import nambui9812.playlistrank.entities.Tag;
@@ -62,15 +63,76 @@ public class TagController {
     return ResponseEntity.status(HttpStatus.CREATED).body(res);
   }
 
-  // Delete a tag
-  @DeleteMapping("/{id}")
-  ResponseEntity<Object> deleteTag(@PathVariable String id) {
+  // Like a tag
+  @PutMapping("/like/{id}")
+  ResponseEntity<Object> likeTag(@PathVariable String id, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
-    if (id == null) {
-      res.put("message", "Cannot delete tag.");
+    Tag existing = tagServiceImpl.findById(id);
+
+    if (existing == null) {
+      res.put("message", "Cannot like an invalid tag.");
+      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    Tag liked = tagServiceImpl.likeTag(authentication.getName(), existing);
+
+    res.put("message", "Like a tag successfully.");
+    res.put("tag", liked);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
+  // Dislike a tag
+  @PutMapping("/dislike/{id}")
+  ResponseEntity<Object> dislikeTag(@PathVariable String id, Authentication authentication) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    Tag existing = tagServiceImpl.findById(id);
+
+    if (existing == null) {
+      res.put("message", "Cannot dislike an invalid tag.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    Tag disliked = tagServiceImpl.dislikeTag(authentication.getName(), existing);
+
+    res.put("message", "Dislike a tag successfully.");
+    res.put("tag", disliked);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
+  // Delete a tag
+  @DeleteMapping("/{id}")
+  ResponseEntity<Object> deleteTag(@PathVariable String id, Authentication authentication) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    Tag existing = tagServiceImpl.findById(id);
+
+    if (existing == null) {
+      res.put("message", "Cannot delete an invalid tag.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    // Username of owner
+    String fromExisting = existing.getAuthorUsername();
+
+    // Username from token
+    String fromAuth = authentication.getName();
+
+    if (!fromExisting.equals(fromAuth)) {
+
+      res.put("message", "Unauthorization for deleting tag.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
     
     tagServiceImpl.deleteTag(id);

@@ -2,6 +2,7 @@ package nambui9812.playlistrank.entities;
 
 import java.util.ArrayList;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
@@ -15,14 +16,19 @@ public class Tag {
   private @Id String id;
 
   @NotNull(message = "Name of tag is mandatory.")
+  @NotBlank(message = "Name of tag cannot be blank.")
   private String name;
+
+  @NotNull(message = "Username of owner is mandatory.")
+  @NotBlank(message = "Username of owner cannot be blank.")
+  private String authorUsername;
 
   @NotNull(message = "Playlist's id is mandatory.")
   private String playlistId;
 
-  private ArrayList<String> likes;
+  private ArrayList<String> likes;      // Contain users's id who like this tag
 
-  private ArrayList<String> dislikes;
+  private ArrayList<String> dislikes;   // COntain users's id who dislike this tag
 
   // Default constructor
   public Tag() {}
@@ -30,14 +36,12 @@ public class Tag {
   // Custom constructor
   public Tag(
     String name,
-    String playlistId,
-    ArrayList<String> likes,
-    ArrayList<String> dislikes
+    String authorUsername,
+    String playlistId
   ) {
     this.name = name;
+    this.authorUsername = authorUsername;
     this.playlistId = playlistId;
-    this.likes = likes;
-    this.dislikes = dislikes;
   }
 
   // All get methods
@@ -47,6 +51,10 @@ public class Tag {
 
   public String getName() {
     return name;
+  }
+
+  public String getAuthorUsername() {
+    return authorUsername;
   }
 
   public String getPlaylistId() {

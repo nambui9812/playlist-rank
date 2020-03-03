@@ -1,5 +1,6 @@
 package nambui9812.playlistrank.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,40 @@ public class TagServiceImpl implements TagService {
   @Override
   public Tag createTag(Tag tag) {
     return tagRepository.save(tag);
+  }
+
+  @Override
+  public Tag likeTag(String username, Tag existing) {
+    ArrayList<String> list = existing.getLikes();
+
+    for (int i = 0; i < list.size(); ++i) {
+      if (list.get(i).equals(username)) {
+        return existing;
+      }
+    }
+
+    list.add(username);
+
+    existing.setLikes(list);
+
+    return tagRepository.save(existing);
+  }
+
+  @Override
+  public Tag dislikeTag(String username, Tag existing) {
+    ArrayList<String> list = existing.getDislikes();
+
+    for (int i = 0; i < list.size(); ++i) {
+      if (list.get(i).equals(username)) {
+        return existing;
+      }
+    }
+
+    list.add(username);
+
+    existing.setDislikes(list);
+
+    return tagRepository.save(existing);
   }
 
   @Override
