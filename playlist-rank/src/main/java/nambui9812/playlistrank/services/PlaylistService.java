@@ -3,6 +3,8 @@ package nambui9812.playlistrank.services;
 import java.util.List;
 
 import nambui9812.playlistrank.entities.Playlist;
+import nambui9812.playlistrank.validations.UpdateDescriptionPlaylistValidation;
+import nambui9812.playlistrank.validations.SharePlaylistValidation;
 
 public interface PlaylistService {
   List<Playlist> findAll();
@@ -13,7 +15,11 @@ public interface PlaylistService {
 
   Playlist createPlaylist(Playlist playlist);
 
-  Playlist updatePlaylist(Playlist existing, Playlist newPlaylist);
+  Playlist updateDescription(Playlist existing, UpdateDescriptionPlaylistValidation info);
+
+  Playlist sharePlaylist(String authorUsername, SharePlaylistValidation info);
+
+  Playlist lovePlaylist(String username, Playlist existing);
 
   void deletePlaylist(String id);
 }

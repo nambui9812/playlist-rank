@@ -9,6 +9,9 @@ import lombok.Data;
 
 @Data
 public class SharePlaylistValidation {
+  @NotNull(message = "Playlist's id is mandatory.")
+  private String id;
+
   @NotNull(message = "Author username is mandatory.")
   @NotBlank
   private String authorUsername;      // Name of person who creates this playlist
@@ -25,6 +28,10 @@ public class SharePlaylistValidation {
     this.authorUsername = authorUsername;
     this.description = description;
     this.tracks = tracks;
+  }
+
+  public String getId() {
+    return id;
   }
 
   public String getAuthorUsername() {

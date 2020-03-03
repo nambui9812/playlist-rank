@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import nambui9812.playlistrank.entities.Playlist;
 import nambui9812.playlistrank.services.impl.PlaylistServiceImpl;
+import nambui9812.playlistrank.validations.UpdateDescriptionPlaylistValidation;
+import nambui9812.playlistrank.validations.SharePlaylistValidation;
 
 @RestController
 @RequestMapping("/playlists")
@@ -63,14 +65,63 @@ public class PlaylistController {
     return ResponseEntity.status(HttpStatus.CREATED).body(res);
   }
 
-  // Update a playlist
-  @PutMapping("/{id}")
-  ResponseEntity<Object> updatePlaylist(@RequestBody Playlist newPlaylist) {
-    Playlist existing = playlistServiceImpl.findById(newPlaylist.getId());
+  // Share a playlist
+  @PostMapping("/share-playlist")
+  ResponseEntity<Object> sharePlaylist(@RequestBody SharePlaylistValidation info, Authentication authentication) {
+    HashMap<String, Object> res = new HashMap<>();
 
-    Playlist updated = playlistServiceImpl.updatePlaylist(existing, newPlaylist);
+    Playlist existing = playlistServiceImpl.findById(info.getId());
 
-    return ResponseEntity.status(HttpStatus.OK).body(updated);
+    if (existing == null) {
+      res.put("message", "Cannot share an invalid playlist.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    Playlist shared = playlistServiceImpl.sharePlaylist(authentication.getName(), info);
+
+    res.put("message", "Share playlist successfully.");
+    res.put("playlist", shared);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
+  // Update playlist's description
+  @PutMapping("/update-description")
+  ResponseEntity<Object> updatePlaylist(@RequestBody UpdateDescriptionPlaylistValidation info) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    Playlist existing = playlistServiceImpl.findById(info.getId());
+
+    Playlist updated = playlistServiceImpl.updateDescription(existing, info);
+
+    res.put("message", "Update description successfully.");
+    res.put("playlist", updated);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
+  // Love a playlist
+  @PutMapping("/love/{id}")
+  ResponseEntity<Object> lovePlaylist(@PathVariable String id, Authentication authentication) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    Playlist existing = playlistServiceImpl.findById(id);
+
+    if (existing == null) {
+      res.put("message", "Cannot love an invalid playlist.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    Playlist loved = playlistServiceImpl.lovePlaylist(authentication.getName(), existing);
+
+    res.put("message", "Love a playlist successfully.");
+    res.put("playlist", loved);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 
   // Delete a playlist
@@ -82,6 +133,7 @@ public class PlaylistController {
 
     if (existing == null) {
       res.put("message", "Cannot delete an invalid playlist.");
+      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
