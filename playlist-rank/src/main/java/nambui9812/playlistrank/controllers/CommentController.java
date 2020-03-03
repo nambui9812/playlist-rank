@@ -38,10 +38,17 @@ public class CommentController {
 
   // Create a new comment
   @PostMapping("/")
-  ResponseEntity<Object> createComment(@RequestBody Comment newComment) throws Exception {
+  ResponseEntity<Object> createComment(@RequestBody Comment newComment, Authentication authentication) throws Exception {
     HashMap<String, Object> res = new HashMap<>();
 
     try {
+
+      if (!newComment.getAuthorUsername().equals(authentication.getName())) {
+        res.put("error", true);
+        res.put("message", "Cannot create comment for other person.");
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
+      }
 
       newComment = commentServiceImpl.createComment(newComment);
 

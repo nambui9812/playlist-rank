@@ -40,10 +40,17 @@ public class PlaylistController {
 
   // Create a new playlist
   @PostMapping("/")
-  ResponseEntity<Object> createPlaylist(@RequestBody Playlist newPlaylist) throws Exception {
+  ResponseEntity<Object> createPlaylist(@RequestBody Playlist newPlaylist, Authentication authentication) throws Exception {
     HashMap<String, Object> res = new HashMap<>();
 
     try {
+
+      if (!newPlaylist.getAuthorUsername().equals(authentication.getName())) {
+        res.put("error", true);
+        res.put("message", "Cannot create playlist for other person.");
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
+      }
 
       newPlaylist = playlistServiceImpl.createPlaylist(newPlaylist);
 

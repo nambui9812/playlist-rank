@@ -38,10 +38,17 @@ public class TagController {
 
   // Create a new tag
   @PostMapping("/")
-  ResponseEntity<Object> createTag(@RequestBody Tag newTag) throws Exception {
+  ResponseEntity<Object> createTag(@RequestBody Tag newTag, Authentication authentication) throws Exception {
     HashMap<String, Object> res = new HashMap<>();
 
     try {
+
+      if (!newTag.getAuthorUsername().equals(authentication.getName())) {
+        res.put("error", true);
+        res.put("message", "Cannot create tag for other person.");
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
+      }
 
       newTag = tagServiceImpl.createTag(newTag);
 
