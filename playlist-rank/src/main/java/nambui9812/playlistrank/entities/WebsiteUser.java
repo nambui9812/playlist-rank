@@ -59,44 +59,29 @@ public class WebsiteUser {
 
   // Custom constructor
   public WebsiteUser(
-    String firstName,
-    String lastName,
     String email,
     String username,
     String password,
-    String dateOfBirth,
-    String monthOfBirth,
-    String yearOfBirth,
-    String street,
-    String optionalStreet,
-    String city,
-    String province,
-    String country,
-    String zipcode,
-    String phone,
-    String status,
-    ArrayList<String> followingList,
-    ArrayList<String> followerList,
     String accountType
   ) {
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.firstName = "";
+    this.lastName = "";
     this.email = email;
     this.username = username;
     this.password = password;
-    this.dateOfBirth = dateOfBirth;
-    this.monthOfBirth = monthOfBirth;
-    this.yearOfBirth = yearOfBirth;
-    this.street = street;
-    this.optionalStreet = optionalStreet;
-    this.city = city;
-    this.province = province;
-    this.country = country;
-    this.zipcode = zipcode;
-    this.phone = phone;
-    this.status = status;
-    this.followingList = followingList;
-    this.followerList = followerList;
+    this.dateOfBirth = "";
+    this.monthOfBirth = "";
+    this.yearOfBirth = "";
+    this.street = "";
+    this.optionalStreet = "";
+    this.city = "";
+    this.province = "";
+    this.country = "";
+    this.zipcode = "";
+    this.phone = "";
+    this.status = "";
+    this.followingList = new ArrayList<>();
+    this.followerList = new ArrayList<>();
     this.accountType = accountType;
   }
 

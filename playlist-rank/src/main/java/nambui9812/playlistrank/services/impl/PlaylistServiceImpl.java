@@ -48,7 +48,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
   @Override
   public Playlist sharePlaylist(String authorUsername, SharePlaylistValidation info) {
-    Playlist newPlaylist = new Playlist(authorUsername, info.getDescription(), info.getAuthorUsername(), null, null, info.getTracks());
+    Playlist newPlaylist = new Playlist(authorUsername, info.getDescription(), info.getAuthorUsername(), info.getTracks());
 
     return playlistRepository.save(newPlaylist);
   }

@@ -37,15 +37,13 @@ public class Playlist {
     String authorUsername,
     String description,
     String sharedFromUsername,
-    ArrayList<String> loves,
-    ArrayList<String> shares,
     ArrayList<String> tracks
   ) {
     this.authorUsername = authorUsername;
     this.description = description;
     this.sharedFromUsername = sharedFromUsername;
-    this.loves = loves;
-    this.shares = shares;
+    this.loves = new ArrayList<>();
+    this.shares = new ArrayList<>();
     this.tracks = tracks;
   }
 

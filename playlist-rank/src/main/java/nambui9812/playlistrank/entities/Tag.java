@@ -42,6 +42,8 @@ public class Tag {
     this.name = name;
     this.authorUsername = authorUsername;
     this.playlistId = playlistId;
+    this.likes = new ArrayList<>();
+    this.dislikes = new ArrayList<>();
   }
 
   // All get methods

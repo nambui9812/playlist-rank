@@ -36,14 +36,13 @@ public class Comment {
     String authorUsername,
     String playlistId,
     String toCommentId,
-    String content,
-    Boolean deleted
+    String content
   ) {
     this.authorUsername = authorUsername;
     this.playlistId = playlistId;
     this.toCommentId = toCommentId;
     this.content = content;
-    this.deleted = deleted;
+    this.deleted = false;
   }
 
   // All get methods
