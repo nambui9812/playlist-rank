@@ -13,6 +13,8 @@ public interface PlaylistService {
 
   List<Playlist> findByAuthorUsername(String authorUsername);
 
+  List<Playlist> findByTagName(String tagName);
+
   Playlist createPlaylist(Playlist playlist);
 
   Playlist updateDescription(Playlist existing, UpdateDescriptionPlaylistValidation info);
