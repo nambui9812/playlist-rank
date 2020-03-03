@@ -79,6 +79,13 @@ public class PlaylistController {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
+    if (existing.getAuthorUsername().equals(authentication.getName())) {
+      res.put("message", "Cannot share your own playlist.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
     Playlist shared = playlistServiceImpl.sharePlaylist(authentication.getName(), info);
 
     res.put("message", "Share playlist successfully.");
@@ -89,10 +96,24 @@ public class PlaylistController {
 
   // Update playlist's description
   @PutMapping("/update-description")
-  ResponseEntity<Object> updatePlaylist(@RequestBody UpdateDescriptionPlaylistValidation info) {
+  ResponseEntity<Object> updatePlaylist(@RequestBody UpdateDescriptionPlaylistValidation info, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
     Playlist existing = playlistServiceImpl.findById(info.getId());
+
+    if (existing == null) {
+      res.put("message", "Cannot update an invalid playlist.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    if (!existing.getAuthorUsername().equals(authentication.getName())) {
+      res.put("message", "Cannot update a playlist that not belong to you.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
 
     Playlist updated = playlistServiceImpl.updateDescription(existing, info);
 
