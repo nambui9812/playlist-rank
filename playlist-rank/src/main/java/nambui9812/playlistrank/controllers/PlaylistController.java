@@ -31,11 +31,29 @@ public class PlaylistController {
   }
 
   // Get a playlist by id
-  @GetMapping("/{id}")
+  @GetMapping("/id/{id}")
   ResponseEntity<Object> getPlaylist(@PathVariable String id) {
+    HashMap<String, Object> res = new HashMap<>();
+
     Playlist playlist = playlistServiceImpl.findById(id);
 
-    return ResponseEntity.status(HttpStatus.OK).body(playlist);
+    res.put("message", "Get playlist successfully.");
+    res.put("playlist", playlist);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
+  // Get all playlist of a user
+  @GetMapping("/authorUsername/{authorUsername}")
+  ResponseEntity<Object> getAllPlaylistOfUser(@PathVariable String authorUsername) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    List<Playlist> playlists = playlistServiceImpl.findByAuthorUsername(authorUsername);
+
+    res.put("message", "Get all playlists of a user successfully.");
+    res.put("playlists", playlists);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 
   // Create a new playlist

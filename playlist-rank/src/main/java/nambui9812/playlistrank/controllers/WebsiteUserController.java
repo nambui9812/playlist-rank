@@ -31,11 +31,18 @@ public class WebsiteUserController {
   }
 
   // Get a user by id
-  @GetMapping("/{id}")
+  @GetMapping("/id/{id}")
   ResponseEntity<Object> getUser(@PathVariable String id) {
+    HashMap<String, Object> res = new HashMap<>();
+
     WebsiteUser user = websiteUserServiceImpl.findById(id);
 
-    return ResponseEntity.status(HttpStatus.OK).body(user);
+    user.setPassword(null);
+
+    res.put("message", "Get user successfully");
+    res.put("user", user);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 
   // Create a new user

@@ -29,11 +29,29 @@ public class TagController {
   }
 
   // Get a tag by id
-  @GetMapping("/{id}")
+  @GetMapping("/id/{id}")
   ResponseEntity<Object> getTag(@PathVariable String id) {
+    HashMap<String, Object> res = new HashMap<>();
+
     Tag tag = tagServiceImpl.findById(id);
 
-    return ResponseEntity.status(HttpStatus.OK).body(tag);
+    res.put("message", "Get tag successfully.");
+    res.put("tag", tag);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
+  // Get all tags of a playlist
+  @GetMapping("/id/{id}")
+  ResponseEntity<Object> getAllTagsOfPlaylist(@PathVariable String playlistId) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    List<Tag> tags = tagServiceImpl.findByPlaylistId(playlistId);
+
+    res.put("message", "Get all tags of a playlist successfully.");
+    res.put("tags", tags);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 
   // Create a new tag

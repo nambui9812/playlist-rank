@@ -29,11 +29,42 @@ public class CommentController {
   }
 
   // Get a comment by id
-  @GetMapping("/{id}")
+  @GetMapping("/id/{id}")
   ResponseEntity<Object> getComment(@PathVariable String id) {
+    HashMap<String, Object> res = new HashMap<>();
+
     Comment comment = commentServiceImpl.findById(id);
 
-    return ResponseEntity.status(HttpStatus.OK).body(comment);
+    res.put("message", "Get comment successfully.");
+    res.put("comment", comment);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
+  // Get all comments in a playlist
+  @GetMapping("/playlist/{id}")
+  ResponseEntity<Object> getAllCommentsInPlaylist(@PathVariable String playlistId) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    List<Comment> comments = commentServiceImpl.findByPlaylistId(playlistId);
+
+    res.put("message", "Get all comments in a playlist successfully.");
+    res.put("comments", comments);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
+  // Get all comments response to a comment
+  @GetMapping("/comment/{id}")
+  ResponseEntity<Object> getAllCommentsResponseToComment(@PathVariable String toCommentId) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    List<Comment> comments = commentServiceImpl.findByToCommentId(toCommentId);
+
+    res.put("message", "Get all comments response to a comment successfully.");
+    res.put("comments", comments);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 
   // Create a new comment
