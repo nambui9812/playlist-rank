@@ -8,6 +8,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import nambui9812.playlistrank.entities.Playlist;
@@ -74,13 +75,29 @@ public class PlaylistController {
 
   // Delete a playlist
   @DeleteMapping("/{id}")
-  ResponseEntity<Object> deletePlaylist(@PathVariable String id) {
+  ResponseEntity<Object> deletePlaylist(@PathVariable String id, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
-    if (id == null) {
-      res.put("message", "Cannot delete playlist.");
+    Playlist existing = playlistServiceImpl.findById(id);
+
+    if (existing == null) {
+      res.put("message", "Cannot delete an invalid playlist.");
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    // Username of owner
+    String fromExisting = existing.getAuthorUsername();
+
+    // Username from token
+    String fromAuth = authentication.getName();
+
+    if (!fromExisting.equals(fromAuth)) {
+
+      res.put("message", "Unauthorization for deleting playlist.");
+      res.put("error", true);
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
     
     playlistServiceImpl.deletePlaylist(id);
