@@ -28,6 +28,13 @@ public class TagController {
     return ResponseEntity.status(HttpStatus.OK).body(tags);
   }
 
+  // Get tag groups
+  ResponseEntity<Object> getGroupsOfTag() {
+    HashMap<String, Integer> res = tagServiceImpl.findGroupTagName();
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
   // Get a tag by id
   @GetMapping("/id/{id}")
   ResponseEntity<Object> getTag(@PathVariable String id) {

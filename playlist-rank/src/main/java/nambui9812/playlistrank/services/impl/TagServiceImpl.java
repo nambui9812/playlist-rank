@@ -1,6 +1,7 @@
 package nambui9812.playlistrank.services.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,21 @@ public class TagServiceImpl implements TagService {
   @Override
   public List<Tag> findAll() {
     return tagRepository.findAll();
+  }
+
+  @Override
+  public HashMap<String, Integer> findGroupTagName() {
+    HashMap<String, Integer> map = new HashMap<>();
+
+    List<Tag> tags = tagRepository.findAll();
+
+    for (int i = 0; i < tags.size(); ++i) {
+      Integer index = map.get(tags.get(i).getName());
+
+      map.put(tags.get(i).getName(), (index == null) ? 1 : index + 1);
+    }
+
+    return map;
   }
 
   @Override

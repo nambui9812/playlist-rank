@@ -1,11 +1,14 @@
 package nambui9812.playlistrank.services;
 
 import java.util.List;
+import java.util.HashMap;
 
 import nambui9812.playlistrank.entities.Tag;
 
 public interface TagService {
   List<Tag> findAll();
+
+  HashMap<String, Integer> findGroupTagName();
 
   Tag findById(String id);
 
