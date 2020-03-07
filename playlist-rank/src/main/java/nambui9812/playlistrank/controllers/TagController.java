@@ -23,14 +23,26 @@ public class TagController {
   // Get all tags
   @GetMapping("/")
   ResponseEntity<Object> getAllTags() {
+    HashMap<String, Object> res = new HashMap<>();
+
     List<Tag> tags = tagServiceImpl.findAll();
 
-    return ResponseEntity.status(HttpStatus.OK).body(tags);
+    res.put("success", true);
+    res.put("message", "Get all tags successfully.");
+    res.put("tags", tags);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 
   // Get tag groups
   ResponseEntity<Object> getGroupsOfTag() {
-    HashMap<String, Integer> res = tagServiceImpl.findGroupTagName();
+    HashMap<String, Object> res = new HashMap<>();
+
+    HashMap<String, Integer> group = tagServiceImpl.findGroupTagName();
+
+    res.put("success", true);
+    res.put("message", "Get group of tags successfully.");
+    res.put("group", group);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
   }
@@ -42,6 +54,7 @@ public class TagController {
 
     Tag tag = tagServiceImpl.findById(id);
 
+    res.put("success", true);
     res.put("message", "Get tag successfully.");
     res.put("tag", tag);
 
@@ -55,6 +68,7 @@ public class TagController {
 
     List<Tag> tags = tagServiceImpl.findByPlaylistId(playlistId);
 
+    res.put("success", true);
     res.put("message", "Get all tags of a playlist successfully.");
     res.put("tags", tags);
 
@@ -69,7 +83,7 @@ public class TagController {
     try {
 
       if (!newTag.getAuthorUsername().equals(authentication.getName())) {
-        res.put("error", true);
+        res.put("success", false);
         res.put("message", "Cannot create tag for other person.");
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
@@ -83,12 +97,13 @@ public class TagController {
       e.getConstraintViolations().stream().forEach((violation) -> {
         messages.put(violation.getPropertyPath().toString(), violation.getMessage());
       });
-      res.put("error", true);
+      res.put("success", false);
       res.put("messages", messages);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
+    res.put("success", true);
     res.put("message", "Create a new tag successfully");
     res.put("tag", newTag);
 
@@ -103,14 +118,15 @@ public class TagController {
     Tag existing = tagServiceImpl.findById(id);
 
     if (existing == null) {
+      res.put("success", false);
       res.put("message", "Cannot like an invalid tag.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
     Tag liked = tagServiceImpl.likeTag(authentication.getName(), existing);
 
+    res.put("success", true);
     res.put("message", "Like a tag successfully.");
     res.put("tag", liked);
 
@@ -125,14 +141,15 @@ public class TagController {
     Tag existing = tagServiceImpl.findById(id);
 
     if (existing == null) {
+      res.put("success", false);
       res.put("message", "Cannot dislike an invalid tag.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
     Tag disliked = tagServiceImpl.dislikeTag(authentication.getName(), existing);
 
+    res.put("success", true);
     res.put("message", "Dislike a tag successfully.");
     res.put("tag", disliked);
 
@@ -147,8 +164,8 @@ public class TagController {
     Tag existing = tagServiceImpl.findById(id);
 
     if (existing == null) {
+      res.put("success", false);
       res.put("message", "Cannot delete an invalid tag.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -160,15 +177,15 @@ public class TagController {
     String fromAuth = authentication.getName();
 
     if (!fromExisting.equals(fromAuth)) {
-
+      res.put("success", false);
       res.put("message", "Unauthorization for deleting tag.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
     
     tagServiceImpl.deleteTag(id);
 
+    res.put("success", true);
     res.put("message", "Delete tag successfully.");
 
     return ResponseEntity.status(HttpStatus.OK).body(res);

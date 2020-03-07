@@ -23,9 +23,15 @@ public class CommentController {
   // Get all comments
   @GetMapping("/")
   ResponseEntity<Object> getAllComments() {
+    HashMap<String, Object> res = new HashMap<>();
+    
     List<Comment> comments = commentServiceImpl.findAll();
 
-    return ResponseEntity.status(HttpStatus.OK).body(comments);
+    res.put("success", true);
+    res.put("message", "Get all coomments successfully.");
+    res.put("comments", comments);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 
   // Get a comment by id
@@ -35,6 +41,7 @@ public class CommentController {
 
     Comment comment = commentServiceImpl.findById(id);
 
+    res.put("success", true);
     res.put("message", "Get comment successfully.");
     res.put("comment", comment);
 
@@ -48,6 +55,7 @@ public class CommentController {
 
     List<Comment> comments = commentServiceImpl.findByPlaylistId(playlistId);
 
+    res.put("success", true);
     res.put("message", "Get all comments in a playlist successfully.");
     res.put("comments", comments);
 
@@ -61,6 +69,7 @@ public class CommentController {
 
     List<Comment> comments = commentServiceImpl.findByToCommentId(toCommentId);
 
+    res.put("success", true);
     res.put("message", "Get all comments response to a comment successfully.");
     res.put("comments", comments);
 
@@ -75,7 +84,7 @@ public class CommentController {
     try {
 
       if (!newComment.getAuthorUsername().equals(authentication.getName())) {
-        res.put("error", true);
+        res.put("success", false);
         res.put("message", "Cannot create comment for other person.");
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
@@ -89,12 +98,13 @@ public class CommentController {
       e.getConstraintViolations().stream().forEach((violation) -> {
         messages.put(violation.getPropertyPath().toString(), violation.getMessage());
       });
-      res.put("error", true);
+      res.put("success", false);
       res.put("messages", messages);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
+    res.put("success", true);
     res.put("message", "Create a new comment successfully");
     res.put("commment", newComment);
 
@@ -109,8 +119,8 @@ public class CommentController {
     Comment existing = commentServiceImpl.findById(id);
 
     if (existing == null) {
+      res.put("success", false);
       res.put("message", "Cannot delete an invalid comment.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -122,15 +132,15 @@ public class CommentController {
     String fromAuth = authentication.getName();
 
     if (!fromExisting.equals(fromAuth)) {
-
+      res.put("success", false);
       res.put("message", "Unauthorization for deleting comment.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
     
     commentServiceImpl.deleteComment(existing);
 
+    res.put("success", true);
     res.put("message", "Delete comment successfully.");
 
     return ResponseEntity.status(HttpStatus.OK).body(res);

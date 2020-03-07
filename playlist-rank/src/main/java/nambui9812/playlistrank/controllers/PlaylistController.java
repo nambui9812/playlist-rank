@@ -25,9 +25,15 @@ public class PlaylistController {
   // Get all playlists
   @GetMapping("/")
   ResponseEntity<Object> getAllPlaylists() {
+    HashMap<String, Object> res = new HashMap<>();
+
     List<Playlist> playlists = playlistServiceImpl.findAll();
 
-    return ResponseEntity.status(HttpStatus.OK).body(playlists);
+    res.put("success", true);
+    res.put("message", "Get all playlists successfully.");
+    res.put("playlists", playlists);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 
   // Get a playlist by id
@@ -37,6 +43,7 @@ public class PlaylistController {
 
     Playlist playlist = playlistServiceImpl.findById(id);
 
+    res.put("success", true);
     res.put("message", "Get playlist successfully.");
     res.put("playlist", playlist);
 
@@ -50,6 +57,7 @@ public class PlaylistController {
 
     List<Playlist> playlists = playlistServiceImpl.findByAuthorUsername(authorUsername);
 
+    res.put("success", true);
     res.put("message", "Get all playlists of a user successfully.");
     res.put("playlists", playlists);
 
@@ -64,7 +72,7 @@ public class PlaylistController {
     try {
 
       if (!newPlaylist.getAuthorUsername().equals(authentication.getName())) {
-        res.put("error", true);
+        res.put("success", false);
         res.put("message", "Cannot create playlist for other person.");
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
@@ -78,12 +86,13 @@ public class PlaylistController {
       e.getConstraintViolations().stream().forEach((violation) -> {
         messages.put(violation.getPropertyPath().toString(), violation.getMessage());
       });
-      res.put("error", true);
+      res.put("success", false);
       res.put("messages", messages);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
+    res.put("success", true);
     res.put("message", "Create a new playlist successfully");
     res.put("playlist", newPlaylist);
 
@@ -98,21 +107,22 @@ public class PlaylistController {
     Playlist existing = playlistServiceImpl.findById(info.getId());
 
     if (existing == null) {
+      res.put("success", false);
       res.put("message", "Cannot share an invalid playlist.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
     if (existing.getAuthorUsername().equals(authentication.getName())) {
+      res.put("success", false);
       res.put("message", "Cannot share your own playlist.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
     Playlist shared = playlistServiceImpl.sharePlaylist(authentication.getName(), info);
 
+    res.put("success", true);
     res.put("message", "Share playlist successfully.");
     res.put("playlist", shared);
 
@@ -127,21 +137,22 @@ public class PlaylistController {
     Playlist existing = playlistServiceImpl.findById(info.getId());
 
     if (existing == null) {
+      res.put("success", false);
       res.put("message", "Cannot update an invalid playlist.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
     if (!existing.getAuthorUsername().equals(authentication.getName())) {
+      res.put("success", false);
       res.put("message", "Cannot update a playlist that not belong to you.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
     Playlist updated = playlistServiceImpl.updateDescription(existing, info);
 
+    res.put("success", true);
     res.put("message", "Update description successfully.");
     res.put("playlist", updated);
 
@@ -156,14 +167,15 @@ public class PlaylistController {
     Playlist existing = playlistServiceImpl.findById(id);
 
     if (existing == null) {
+      res.put("success", false);
       res.put("message", "Cannot love an invalid playlist.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
     Playlist loved = playlistServiceImpl.lovePlaylist(authentication.getName(), existing);
 
+    res.put("success", true);
     res.put("message", "Love a playlist successfully.");
     res.put("playlist", loved);
 
@@ -178,8 +190,8 @@ public class PlaylistController {
     Playlist existing = playlistServiceImpl.findById(id);
 
     if (existing == null) {
+      res.put("success", false);
       res.put("message", "Cannot delete an invalid playlist.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -191,15 +203,15 @@ public class PlaylistController {
     String fromAuth = authentication.getName();
 
     if (!fromExisting.equals(fromAuth)) {
-
+      res.put("success", false);
       res.put("message", "Unauthorization for deleting playlist.");
-      res.put("error", true);
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
     
     playlistServiceImpl.deletePlaylist(id);
 
+    res.put("success", true);
     res.put("message", "Delete playlist successfully.");
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
