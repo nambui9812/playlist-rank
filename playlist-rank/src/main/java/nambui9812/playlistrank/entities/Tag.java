@@ -30,6 +30,8 @@ public class Tag {
 
   private ArrayList<String> dislikes;   // COntain users's id who dislike this tag
 
+  private Integer popular;
+
   // Default constructor
   public Tag() {}
 
@@ -44,6 +46,7 @@ public class Tag {
     this.playlistId = playlistId;
     this.likes = new ArrayList<>();
     this.dislikes = new ArrayList<>();
+    this.popular = 0;
   }
 
   // All get methods
@@ -77,5 +80,13 @@ public class Tag {
 
   public void setDislikes(ArrayList<String> dislikes) {
     this.dislikes = dislikes;
+  }
+
+  public Integer getPopular() {
+    return popular;
+  }
+
+  public void setPopular(Integer popular) {
+    this.popular = popular;
   }
 }

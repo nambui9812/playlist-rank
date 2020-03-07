@@ -42,8 +42,8 @@ public class WebsiteUserServiceImplTest {
 
   @Before
   public void setup() {
-    nam1 = new WebsiteUser("nam1@gmail.com", "nam1", "nam1123", "basic");  
-    nam2 = new WebsiteUser("nam2@gmail.com", "nam2", "nam2123", "basic");
+    nam1 = new WebsiteUser("nam1@gmail.com", "nam1", "nam1123");  
+    nam2 = new WebsiteUser("nam2@gmail.com", "nam2", "nam2123");
     
     users.add(nam1);
     users.add(nam2);

@@ -29,6 +29,8 @@ public class Playlist {
   
   private ArrayList<String> tracks;   // List of name and author of the track
 
+  private Integer popular;
+
   // Default constructor
   public Playlist() {}
 
@@ -45,6 +47,7 @@ public class Playlist {
     this.loves = new ArrayList<>();
     this.shares = new ArrayList<>();
     this.tracks = tracks;
+    this.popular = 0;
   }
 
   // All get methods
@@ -94,5 +97,13 @@ public class Playlist {
 
   public void setTracks(ArrayList<String> tracks) {
     this.tracks = tracks;
+  }
+
+  public Integer getPopular() {
+    return popular;
+  }
+
+  public void setPopular(Integer popular) {
+    this.popular = popular;
   }
 }

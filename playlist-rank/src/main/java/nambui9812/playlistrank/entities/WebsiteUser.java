@@ -61,8 +61,7 @@ public class WebsiteUser {
   public WebsiteUser(
     String email,
     String username,
-    String password,
-    String accountType
+    String password
   ) {
     this.firstName = "";
     this.lastName = "";
@@ -82,7 +81,7 @@ public class WebsiteUser {
     this.status = "";
     this.followingList = new ArrayList<>();
     this.followerList = new ArrayList<>();
-    this.accountType = accountType;
+    this.accountType = "basic";
   }
 
   // All get methods
