@@ -48,7 +48,7 @@ public class TagController {
   }
 
   // Get a tag by id
-  @GetMapping("/id/{id}")
+  @GetMapping("/tag/{id}")
   ResponseEntity<Object> getTag(@PathVariable String id) {
     HashMap<String, Object> res = new HashMap<>();
 
@@ -62,7 +62,7 @@ public class TagController {
   }
 
   // Get all tags of a playlist
-  @GetMapping("/id/{id}")
+  @GetMapping("/playlist/{id}")
   ResponseEntity<Object> getAllTagsOfPlaylist(@PathVariable String playlistId) {
     HashMap<String, Object> res = new HashMap<>();
 
