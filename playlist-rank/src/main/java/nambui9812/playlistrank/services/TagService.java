@@ -22,5 +22,7 @@ public interface TagService {
 
   Tag dislikeTag(String username, Tag existing);
 
+  void updateTagPopular();
+
   void deleteTag(String id);
 }

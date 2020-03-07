@@ -29,7 +29,7 @@ public class Playlist {
   
   private ArrayList<String> tracks;   // List of name and author of the track
 
-  private Integer popular;
+  private float popular;
 
   // Default constructor
   public Playlist() {}
@@ -47,7 +47,7 @@ public class Playlist {
     this.loves = new ArrayList<>();
     this.shares = new ArrayList<>();
     this.tracks = tracks;
-    this.popular = 0;
+    this.popular = 0f;
   }
 
   // All get methods
@@ -99,11 +99,11 @@ public class Playlist {
     this.tracks = tracks;
   }
 
-  public Integer getPopular() {
+  public float getPopular() {
     return popular;
   }
 
-  public void setPopular(Integer popular) {
+  public void setPopular(float popular) {
     this.popular = popular;
   }
 }

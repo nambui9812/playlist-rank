@@ -10,21 +10,21 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 //import java.util.concurrent.TimeUnit;
 
-import nambui9812.playlistrank.services.impl.PlaylistServiceImpl;
+import nambui9812.playlistrank.services.impl.TagServiceImpl;
 
 @Component
-public class UpdatePlaylistPopularTask {
+public class UpdateTagPopularTask {
   private static final Logger logger = LoggerFactory.getLogger(UpdatePlaylistPopularTask.class);
   private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
   @Autowired
-  private PlaylistServiceImpl playlistServiceImpl;
+  private TagServiceImpl tagServiceImpl;
 
   @Scheduled(fixedRate = 60000)
   public void scheduleTaskWithFixedRate() {
     logger.info("Fixed Rate Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
 
-    playlistServiceImpl.updatePlaylistPopular();
+    tagServiceImpl.updateTagPopular();
   }
 
   public void scheduleTaskWithFixedDelay() {}

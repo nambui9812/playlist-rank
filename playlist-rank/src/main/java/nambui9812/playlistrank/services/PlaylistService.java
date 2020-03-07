@@ -23,5 +23,7 @@ public interface PlaylistService {
 
   Playlist lovePlaylist(String username, Playlist existing);
 
+  void updatePlaylistPopular();
+
   void deletePlaylist(String id);
 }

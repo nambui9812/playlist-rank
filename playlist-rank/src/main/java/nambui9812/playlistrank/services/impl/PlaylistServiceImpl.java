@@ -99,6 +99,19 @@ public class PlaylistServiceImpl implements PlaylistService {
   }
 
   @Override
+  public void updatePlaylistPopular() {
+    List<Playlist> playlists = playlistRepository.findAll();
+
+    for (int i = 0; i < playlists.size(); ++i) {
+      float popular = (float) playlists.get(i).getLoves().size() * 2 + playlists.get(i).getShares().size();
+
+      playlists.get(i).setPopular(popular);
+    }
+
+    playlistRepository.saveAll(playlists);
+  }
+
+  @Override
   public void deletePlaylist(String id) {
     playlistRepository.deleteById(id);
   }

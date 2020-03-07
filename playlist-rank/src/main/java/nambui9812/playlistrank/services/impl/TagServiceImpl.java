@@ -92,6 +92,19 @@ public class TagServiceImpl implements TagService {
   }
 
   @Override
+  public void updateTagPopular() {
+    List<Tag> tags = tagRepository.findAll();
+
+    for (int i = 0; i < tags.size(); ++i) {
+      float popular = (float) tags.get(i).getLikes().size() * 1.5f - tags.get(i).getDislikes().size();
+
+      tags.get(i).setPopular(popular);
+    }
+
+    tagRepository.saveAll(tags);
+  }
+
+  @Override
   public void deleteTag(String id) {
     tagRepository.deleteById(id);
   }
