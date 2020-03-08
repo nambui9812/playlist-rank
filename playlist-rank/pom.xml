@@ -82,6 +82,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<exclusions>
+    <exclusion>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+    </exclusion>
+  </exclusions>
 	</dependencies>
 
 	<build>
