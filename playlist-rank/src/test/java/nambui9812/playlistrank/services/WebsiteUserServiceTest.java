@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -33,8 +32,8 @@ public class WebsiteUserServiceTest {
   private WebsiteUser nam2;
   private ArrayList<WebsiteUser> users = new ArrayList<>();
 
-  @Before
-  public void setup() {
+  @Test
+  public void testFindAll_thenListOfUsersShouldBeReturned() {
     nam1 = new WebsiteUser("nam1@gmail.com", "nam1", "nam1");
     nam2 = new WebsiteUser("nam2@gmail.com", "nam2", "nam2");
 
@@ -43,10 +42,6 @@ public class WebsiteUserServiceTest {
 
     Mockito.when(websiteUserRepository.findAll()).thenReturn(users);
 
-  }
-
-  @Test
-  public void testFindAll_thenListOfUsersShouldBeReturned() {
     List<WebsiteUser> foundUsersFromService = websiteUserServiceImpl.findAll();
 
     assertNotNull(foundUsersFromService);
