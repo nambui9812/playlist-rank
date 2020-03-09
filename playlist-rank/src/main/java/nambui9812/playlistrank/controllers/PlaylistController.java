@@ -16,6 +16,7 @@ import nambui9812.playlistrank.services.impl.PlaylistServiceImpl;
 import nambui9812.playlistrank.validations.UpdateDescriptionPlaylistValidation;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/playlists")
 public class PlaylistController {
   @Autowired

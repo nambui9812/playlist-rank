@@ -15,6 +15,7 @@ import nambui9812.playlistrank.entities.Tag;
 import nambui9812.playlistrank.services.impl.TagServiceImpl;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/tags")
 public class TagController {
   @Autowired

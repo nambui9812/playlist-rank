@@ -15,6 +15,7 @@ import nambui9812.playlistrank.entities.Comment;
 import nambui9812.playlistrank.services.impl.CommentServiceImpl;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/comments")
 public class CommentController {
   @Autowired

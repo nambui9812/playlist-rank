@@ -16,6 +16,7 @@ import nambui9812.playlistrank.services.impl.WebsiteUserServiceImpl;
 import nambui9812.playlistrank.validations.UpdateWebsiteUserValidation;
 import nambui9812.playlistrank.validations.FollowWebsiteUserValidation;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/users")
 public class WebsiteUserController {
