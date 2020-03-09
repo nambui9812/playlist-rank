@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import nambui9812.playlistrank.entities.Playlist;
 import nambui9812.playlistrank.services.impl.PlaylistServiceImpl;
 import nambui9812.playlistrank.validations.UpdateDescriptionPlaylistValidation;
-import nambui9812.playlistrank.validations.SharePlaylistValidation;
 
 @RestController
 @RequestMapping("/playlists")
@@ -100,11 +99,11 @@ public class PlaylistController {
   }
 
   // Share a playlist
-  @PostMapping("/share-playlist")
-  ResponseEntity<Object> sharePlaylist(@RequestBody SharePlaylistValidation info, Authentication authentication) {
+  @PostMapping("/share-playlist/{id}")
+  ResponseEntity<Object> sharePlaylist(@PathVariable String id, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
-    Playlist existing = playlistServiceImpl.findById(info.getId());
+    Playlist existing = playlistServiceImpl.findById(id);
 
     if (existing == null) {
       res.put("success", false);
@@ -120,7 +119,7 @@ public class PlaylistController {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
-    Playlist shared = playlistServiceImpl.sharePlaylist(authentication.getName(), info);
+    Playlist shared = playlistServiceImpl.sharePlaylist(authentication.getName(), existing);
 
     res.put("success", true);
     res.put("message", "Share playlist successfully.");

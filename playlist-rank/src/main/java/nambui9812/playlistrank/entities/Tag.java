@@ -26,11 +26,11 @@ public class Tag {
   @NotNull(message = "Playlist's id is mandatory.")
   private String playlistId;
 
-  private ArrayList<String> likes;      // Contain users's username who like this tag
+  private ArrayList<String> likes = new ArrayList<>();      // Contain users's username who like this tag
 
-  private ArrayList<String> dislikes;   // COntain users's username who dislike this tag
+  private ArrayList<String> dislikes = new ArrayList<>();   // COntain users's username who dislike this tag
 
-  private float popular;
+  private float popular = 0f;
 
   // Default constructor
   public Tag() {}
@@ -44,9 +44,6 @@ public class Tag {
     this.name = name;
     this.authorUsername = authorUsername;
     this.playlistId = playlistId;
-    this.likes = new ArrayList<>();
-    this.dislikes = new ArrayList<>();
-    this.popular = 0f;
   }
 
   // All get methods

@@ -23,13 +23,13 @@ public class Playlist {
   
   private String sharedFromUsername;  // Null if not shared from anyone
   
-  private ArrayList<String> loves;    // List of users's username who loves this playlist
+  private ArrayList<String> loves = new ArrayList<>();    // List of users's username who loves this playlist
   
-  private ArrayList<String> shares;   // List of users's username who shares this playlist
+  private ArrayList<String> shares = new ArrayList<>();   // List of users's username who shares this playlist
   
   private ArrayList<String> tracks;   // List of name and author of the track
 
-  private float popular;
+  private float popular = 0f;
 
   // Default constructor
   public Playlist() {}
@@ -44,10 +44,7 @@ public class Playlist {
     this.authorUsername = authorUsername;
     this.description = description;
     this.sharedFromUsername = sharedFromUsername;
-    this.loves = new ArrayList<>();
-    this.shares = new ArrayList<>();
     this.tracks = tracks;
-    this.popular = 0f;
   }
 
   // All get methods

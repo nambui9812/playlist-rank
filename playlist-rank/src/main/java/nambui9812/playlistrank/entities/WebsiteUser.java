@@ -18,8 +18,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class WebsiteUser {
   private @Id String id;
 
-  private String firstName;
-  private String lastName;
+  private String firstName = "";
+  private String lastName = "";
 
   @NotNull(message = "Email is mandatory.")
   @Email(message = "Email is invalid.")
@@ -35,24 +35,24 @@ public class WebsiteUser {
   @Size(min = 10, message = "Password must be at least 10 characters in size.")
   private String password;
 
-  private String dateOfBirth;
-  private String monthOfBirth;
-  private String yearOfBirth;
-  private String street;
-  private String optionalStreet;
-  private String city;
-  private String province;
-  private String country;
-  private String zipcode;
-  private String phone;
-  private String status;
+  private String dateOfBirth = "";
+  private String monthOfBirth = "";
+  private String yearOfBirth = "";
+  private String street = "";
+  private String optionalStreet = "";
+  private String city = "";
+  private String province = "";
+  private String country = "";
+  private String zipcode = "";
+  private String phone = "";
+  private String status = "";
 
-  private ArrayList<String> followingList;
-  private ArrayList<String> followerList;
+  private ArrayList<String> followingList = new ArrayList<>();
+  private ArrayList<String> followerList = new ArrayList<>();
 
   @NotNull(message = "Account type is mandatory.")
   @NotBlank
-  private String accountType;
+  private String accountType = "basic";
 
   // Default constructor
   public WebsiteUser() {}
@@ -63,25 +63,9 @@ public class WebsiteUser {
     String username,
     String password
   ) {
-    this.firstName = "";
-    this.lastName = "";
     this.email = email;
     this.username = username;
     this.password = password;
-    this.dateOfBirth = "";
-    this.monthOfBirth = "";
-    this.yearOfBirth = "";
-    this.street = "";
-    this.optionalStreet = "";
-    this.city = "";
-    this.province = "";
-    this.country = "";
-    this.zipcode = "";
-    this.phone = "";
-    this.status = "";
-    this.followingList = new ArrayList<>();
-    this.followerList = new ArrayList<>();
-    this.accountType = "basic";
   }
 
   // All get methods

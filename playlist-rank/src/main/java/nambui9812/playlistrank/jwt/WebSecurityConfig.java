@@ -1,5 +1,7 @@
 package nambui9812.playlistrank.jwt;
 
+import org.springframework.http.HttpMethod;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.context.annotation.Bean;
@@ -58,12 +60,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // We don't need CSRF for this example
     httpSecurity.csrf().disable()
     // Don't authenticate this particular request
-    .authorizeRequests().antMatchers("/users/sign-in", "/users/sign-up").permitAll().
+    .authorizeRequests()
+    .antMatchers(HttpMethod.GET ,"/users/**/").permitAll()
+    .antMatchers(HttpMethod.POST, "/users/sign-in", "/users/sign-up").permitAll()
+    .antMatchers(HttpMethod.GET, "/playlists/**/").permitAll()
+    .antMatchers(HttpMethod.GET, "/tags/**/").permitAll()
+    .antMatchers(HttpMethod.GET, "/comments/**/").permitAll()
     // All other requests need to be authenticated
-    anyRequest().authenticated().and().
+    .anyRequest().authenticated().and()
     // Make sure we use stateless session; session won't be used to
     // store user's state.
-    exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+    .exceptionHandling()
+    .authenticationEntryPoint(jwtAuthenticationEntryPoint)
     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     // Add a filter to validate the tokens with every request
     httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

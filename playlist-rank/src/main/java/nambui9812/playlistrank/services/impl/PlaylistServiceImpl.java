@@ -13,7 +13,6 @@ import nambui9812.playlistrank.repositories.TagRepository;
 import nambui9812.playlistrank.services.PlaylistService;
 import nambui9812.playlistrank.exceptions.PlaylistNotFoundException;
 import nambui9812.playlistrank.validations.UpdateDescriptionPlaylistValidation;
-import nambui9812.playlistrank.validations.SharePlaylistValidation;
 
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
@@ -75,8 +74,27 @@ public class PlaylistServiceImpl implements PlaylistService {
   }
 
   @Override
-  public Playlist sharePlaylist(String authorUsername, SharePlaylistValidation info) {
-    Playlist newPlaylist = new Playlist(authorUsername, info.getDescription(), info.getAuthorUsername(), info.getTracks());
+  public Playlist sharePlaylist(String authorUsername, Playlist existing) {
+    Playlist newPlaylist = new Playlist(authorUsername, existing.getDescription(), existing.getAuthorUsername(), existing.getTracks());
+
+    // Check if this user shared this playlist or not
+    boolean shared = false;
+    ArrayList<String> shares = existing.getShares();
+
+    for (int i = 0; i < shares.size(); ++i) {
+      if (shares.get(i).equals(authorUsername)) {
+        shared = true;
+        break;
+      }
+    }
+
+    // Allow shares many time but not include in share list of original playlist
+    if (!shared) {
+      shares.add(authorUsername);
+    }
+
+    existing.setShares(shares);
+    playlistRepository.save(existing);
 
     return playlistRepository.save(newPlaylist);
   }

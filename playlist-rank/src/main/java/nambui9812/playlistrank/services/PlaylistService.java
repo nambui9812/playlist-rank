@@ -4,7 +4,6 @@ import java.util.List;
 
 import nambui9812.playlistrank.entities.Playlist;
 import nambui9812.playlistrank.validations.UpdateDescriptionPlaylistValidation;
-import nambui9812.playlistrank.validations.SharePlaylistValidation;
 
 public interface PlaylistService {
   List<Playlist> findAll();
@@ -19,7 +18,7 @@ public interface PlaylistService {
 
   Playlist updateDescription(Playlist existing, UpdateDescriptionPlaylistValidation info);
 
-  Playlist sharePlaylist(String authorUsername, SharePlaylistValidation info);
+  Playlist sharePlaylist(String authorUsername, Playlist existing);
 
   Playlist lovePlaylist(String username, Playlist existing);
 

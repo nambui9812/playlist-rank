@@ -26,7 +26,7 @@ public class Comment {
   @Size(min = 1, message = "Comment must have at least 1 character in size.")
   private String content;
 
-  private Boolean deleted;
+  private Boolean deleted = false;
 
   // Default constructor
   public Comment() {}
@@ -42,7 +42,6 @@ public class Comment {
     this.playlistId = playlistId;
     this.toCommentId = toCommentId;
     this.content = content;
-    this.deleted = false;
   }
 
   // All get methods
