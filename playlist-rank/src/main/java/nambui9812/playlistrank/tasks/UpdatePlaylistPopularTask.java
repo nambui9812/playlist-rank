@@ -22,9 +22,9 @@ public class UpdatePlaylistPopularTask {
 
   @Scheduled(fixedRate = 60000)
   public void scheduleTaskWithFixedRate() {
-    logger.info("Fixed Rate Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
+    //logger.info("Fixed Rate Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
 
-    playlistServiceImpl.updatePlaylistPopular();
+    //playlistServiceImpl.updatePlaylistPopular();
   }
 
   public void scheduleTaskWithFixedDelay() {}

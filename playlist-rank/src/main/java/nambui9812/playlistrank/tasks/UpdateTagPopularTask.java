@@ -22,9 +22,9 @@ public class UpdateTagPopularTask {
 
   @Scheduled(fixedRate = 60000)
   public void scheduleTaskWithFixedRate() {
-    logger.info("Fixed Rate Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
+    //logger.info("Fixed Rate Task :: Execution Time - {}", dateTimeFormatter.format(LocalDateTime.now()));
 
-    tagServiceImpl.updateTagPopular();
+    //tagServiceImpl.updateTagPopular();
   }
 
   public void scheduleTaskWithFixedDelay() {}
