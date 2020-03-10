@@ -58,6 +58,8 @@ public class WebsiteUserController {
   ResponseEntity<Object> createUser(@RequestBody WebsiteUser newUser) throws Exception {
     HashMap<String, Object> res = new HashMap<>();
 
+    System.out.println("run..");
+
     try {
 
       newUser = websiteUserServiceImpl.createWebsiteUser(newUser);

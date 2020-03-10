@@ -58,14 +58,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
     // We don't need CSRF for this example
-    httpSecurity.csrf().disable()
+    httpSecurity.cors().and().csrf().disable()
     // Don't authenticate this particular request
     .authorizeRequests()
-    .antMatchers(HttpMethod.GET ,"/users/**/").permitAll()
-    .antMatchers(HttpMethod.POST, "/users/sign-in", "/users/sign-up").permitAll()
-    .antMatchers(HttpMethod.GET, "/playlists/**/").permitAll()
-    .antMatchers(HttpMethod.GET, "/tags/**/").permitAll()
-    .antMatchers(HttpMethod.GET, "/comments/**/").permitAll()
+    .antMatchers(HttpMethod.GET ,"/users/**").permitAll()
+    .antMatchers("/users/sign-up").permitAll()
+    .antMatchers(HttpMethod.POST, "/users/sign-in").permitAll()
+    .antMatchers(HttpMethod.GET, "/playlists/**").permitAll()
+    .antMatchers(HttpMethod.GET, "/tags/**").permitAll()
+    .antMatchers(HttpMethod.GET, "/comments/**").permitAll()
     // All other requests need to be authenticated
     .anyRequest().authenticated().and()
     // Make sure we use stateless session; session won't be used to
