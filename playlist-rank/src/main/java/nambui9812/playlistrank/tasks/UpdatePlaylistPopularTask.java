@@ -1,5 +1,6 @@
 package nambui9812.playlistrank.tasks;
 
+/*
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,3 +35,4 @@ public class UpdatePlaylistPopularTask {
   public void scheduleTaskWithCronExpression() {}
 
 }
+*/
