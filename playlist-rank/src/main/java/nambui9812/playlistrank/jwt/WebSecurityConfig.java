@@ -22,6 +22,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -58,12 +61,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
     // We don't need CSRF for this example
-    httpSecurity.cors().and().csrf().disable()
+    httpSecurity
+    .cors().and().csrf().disable()
     // Don't authenticate this particular request
     .authorizeRequests()
     .antMatchers(HttpMethod.GET ,"/users/**").permitAll()
-    .antMatchers("/users/sign-up").permitAll()
-    .antMatchers(HttpMethod.POST, "/users/sign-in").permitAll()
+    .antMatchers(HttpMethod.POST ,"/users/sign-up/**").permitAll()
+    .antMatchers(HttpMethod.POST, "/users/sign-in/**").permitAll()
     .antMatchers(HttpMethod.GET, "/playlists/**").permitAll()
     .antMatchers(HttpMethod.GET, "/tags/**").permitAll()
     .antMatchers(HttpMethod.GET, "/comments/**").permitAll()
@@ -76,5 +80,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     // Add a filter to validate the tokens with every request
     httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+  }
+
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+    return source;
   }
 }
