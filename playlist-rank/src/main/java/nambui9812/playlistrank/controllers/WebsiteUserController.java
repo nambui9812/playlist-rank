@@ -53,6 +53,22 @@ public class WebsiteUserController {
     return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 
+  // Get a user by username
+  @GetMapping("/username/{username}")
+  ResponseEntity<Object> getUserByUsername(@PathVariable String username) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    WebsiteUser user = websiteUserServiceImpl.findByUsername(username);
+
+    user.setPassword(null);
+
+    res.put("success", true);
+    res.put("message", "Get user successfully");
+    res.put("user", user);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
   // Create a new user
   @PostMapping("/sign-up")
   ResponseEntity<Object> createUser(@RequestBody WebsiteUser newUser) throws Exception {
