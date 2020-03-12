@@ -3,20 +3,20 @@ package nambui9812.playlistrank.entities;
 import java.util.ArrayList;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import nambui9812.playlistrank.entities.WebsiteTrack;
+
 @Data
 @Document(collection = "playlists")
 public class Playlist {
   private @Id String id;
 
-  @NotNull(message = "Author username is mandatory.")
-  @NotBlank
+  @NotBlank(message = "Author username is mandatory.")
   private String authorUsername;      // Name of person who creates this playlist
   
   private String description;
@@ -27,7 +27,7 @@ public class Playlist {
   
   private ArrayList<String> shares = new ArrayList<>();   // List of users's username who shares this playlist
   
-  private ArrayList<String> tracks;   // List of name and author of the track
+  private ArrayList<WebsiteTrack> tracks;   // List of name and author of the track
 
   private float popular = 0f;
 
@@ -39,7 +39,7 @@ public class Playlist {
     String authorUsername,
     String description,
     String sharedFromUsername,
-    ArrayList<String> tracks
+    ArrayList<WebsiteTrack> tracks
   ) {
     this.authorUsername = authorUsername;
     this.description = description;
@@ -88,11 +88,11 @@ public class Playlist {
     this.shares = shares;
   }
 
-  public ArrayList<String> getTracks() {
+  public ArrayList<WebsiteTrack> getTracks() {
     return tracks;
   }
 
-  public void setTracks(ArrayList<String> tracks) {
+  public void setTracks(ArrayList<WebsiteTrack> tracks) {
     this.tracks = tracks;
   }
 
