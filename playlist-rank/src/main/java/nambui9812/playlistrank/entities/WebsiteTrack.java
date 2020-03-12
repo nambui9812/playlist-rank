@@ -1,12 +1,12 @@
 package nambui9812.playlistrank.entities;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 public class WebsiteTrack {
-  @NotNull(message = "Author of track is mandatory.")
+  @NotBlank(message = "Author of track is mandatory.")
   private String authorName;
 
-  @NotNull(message = "Name of track is mandatory.")
+  @NotBlank(message = "Name of track is mandatory.")
   private String trackName;
 
   public WebsiteTrack(
