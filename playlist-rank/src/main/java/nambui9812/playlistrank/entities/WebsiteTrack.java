@@ -2,6 +2,9 @@ package nambui9812.playlistrank.entities;
 
 import javax.validation.constraints.NotBlank;
 
+import lombok.Data;
+
+@Data
 public class WebsiteTrack {
   @NotBlank(message = "Author of track is mandatory.")
   private String authorName;
@@ -21,7 +24,15 @@ public class WebsiteTrack {
     return authorName;
   }
 
-  public String getTracKName() {
+  public void setAuthorName(String authorName) {
+    this.authorName = authorName;
+  }
+
+  public String getTrackName() {
     return trackName;
+  }
+
+  public void setTrackName(String trackName) {
+    this.trackName = trackName;
   }
 }

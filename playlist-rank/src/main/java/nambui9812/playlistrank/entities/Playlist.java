@@ -32,8 +32,7 @@ public class Playlist {
   private ArrayList<String> shares = new ArrayList<>();   // List of users's username who shares this playlist
   
   @NotEmpty(message = "Playlist must have at least one author - name track pair.")
-  @Valid
-  private ArrayList<WebsiteTrack> tracks;   // List of name and author of the track
+  private ArrayList<@NotNull @Valid WebsiteTrack> tracks;   // List of name and author of the track
 
   private float popular = 0f;
 
