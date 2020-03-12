@@ -3,7 +3,6 @@ package nambui9812.playlistrank.entities;
 import java.util.ArrayList;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -15,15 +14,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Tag {
   private @Id String id;
 
-  @NotNull(message = "Name of tag is mandatory.")
-  @NotBlank(message = "Name of tag cannot be blank.")
+  @NotBlank(message = "Name of tag is mandatory.")
   private String name;
 
-  @NotNull(message = "Username of owner is mandatory.")
-  @NotBlank(message = "Username of owner cannot be blank.")
+  @NotBlank(message = "Username of owner is mandatory.")
   private String authorUsername;
 
-  @NotNull(message = "Playlist's id is mandatory.")
+  @NotBlank(message = "Playlist's id is mandatory.")
   private String playlistId;
 
   private ArrayList<String> likes = new ArrayList<>();      // Contain users's username who like this tag

@@ -2,6 +2,7 @@ package nambui9812.playlistrank.entities;
 
 import java.util.ArrayList;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,8 +31,8 @@ public class Playlist {
   
   private ArrayList<String> shares = new ArrayList<>();   // List of users's username who shares this playlist
   
-  @NotNull(message = "Playlist must have at least one author - name track pair.")
   @NotEmpty(message = "Playlist must have at least one author - name track pair.")
+  @Valid
   private ArrayList<WebsiteTrack> tracks;   // List of name and author of the track
 
   private float popular = 0f;

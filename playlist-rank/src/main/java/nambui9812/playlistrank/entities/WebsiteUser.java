@@ -50,8 +50,7 @@ public class WebsiteUser {
   private ArrayList<String> followingList = new ArrayList<>();
   private ArrayList<String> followerList = new ArrayList<>();
 
-  @NotNull(message = "Account type is mandatory.")
-  @NotBlank
+  @NotBlank(message = "Account type is mandatory.")
   private String accountType = "basic";
 
   // Default constructor
