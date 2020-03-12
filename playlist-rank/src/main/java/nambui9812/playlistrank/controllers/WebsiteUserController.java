@@ -85,7 +85,7 @@ public class WebsiteUserController {
         messages.put(violation.getPropertyPath().toString(), violation.getMessage());
       });
       res.put("success", false);
-      res.put("messages", messages);
+      res.put("message", messages);
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }

@@ -2,7 +2,9 @@ package nambui9812.playlistrank.entities;
 
 import java.util.ArrayList;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.Data;
 
@@ -16,7 +18,8 @@ import nambui9812.playlistrank.entities.WebsiteTrack;
 public class Playlist {
   private @Id String id;
 
-  @NotBlank(message = "Author username is mandatory.")
+  @NotNull(message = "Author username is mandatory.")
+  @Size(min = 4, max = 20, message = "Author username must be from 4 to 20 in size.")
   private String authorUsername;      // Name of person who creates this playlist
   
   private String description;
@@ -27,6 +30,8 @@ public class Playlist {
   
   private ArrayList<String> shares = new ArrayList<>();   // List of users's username who shares this playlist
   
+  @NotNull(message = "Playlist must have at least one author - name track pair.")
+  @NotEmpty(message = "Playlist must have at least one author - name track pair.")
   private ArrayList<WebsiteTrack> tracks;   // List of name and author of the track
 
   private float popular = 0f;
