@@ -3,7 +3,7 @@ package nambui9812.playlistrank.controllers;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import nambui9812.playlistrank.entities.Comment;
 import nambui9812.playlistrank.services.impl.CommentServiceImpl;
 
-@RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RestController
 @RequestMapping("/comments")
 public class CommentController {
   @Autowired
@@ -79,31 +79,17 @@ public class CommentController {
 
   // Create a new comment
   @PostMapping("/")
-  ResponseEntity<Object> createComment(@RequestBody Comment newComment, Authentication authentication) throws Exception {
+  ResponseEntity<Object> createComment(@Valid @RequestBody Comment newComment, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
-    try {
-
-      if (!newComment.getAuthorUsername().equals(authentication.getName())) {
-        res.put("success", false);
-        res.put("message", "Cannot create comment for other person.");
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
-      }
-
-      newComment = commentServiceImpl.createComment(newComment);
-
-    } catch (ConstraintViolationException e) {
-
-      HashMap<String, Object> messages = new HashMap<>();
-      e.getConstraintViolations().stream().forEach((violation) -> {
-        messages.put(violation.getPropertyPath().toString(), violation.getMessage());
-      });
+    if (!newComment.getAuthorUsername().equals(authentication.getName())) {
       res.put("success", false);
-      res.put("messages", messages);
+      res.put("message", "Cannot create comment for other person.");
 
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
+
+    newComment = commentServiceImpl.createComment(newComment);
 
     res.put("success", true);
     res.put("message", "Create a new comment successfully");

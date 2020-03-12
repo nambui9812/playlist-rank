@@ -15,8 +15,8 @@ import nambui9812.playlistrank.entities.Playlist;
 import nambui9812.playlistrank.services.impl.PlaylistServiceImpl;
 import nambui9812.playlistrank.validations.UpdateDescriptionPlaylistValidation;
 
-@RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RestController
 @RequestMapping("/playlists")
 public class PlaylistController {
   @Autowired
@@ -117,7 +117,7 @@ public class PlaylistController {
 
   // Update playlist's description
   @PutMapping("/update-description")
-  ResponseEntity<Object> updatePlaylist(@RequestBody UpdateDescriptionPlaylistValidation info, Authentication authentication) {
+  ResponseEntity<Object> updatePlaylist( @Valid @RequestBody UpdateDescriptionPlaylistValidation info, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
     Playlist existing = playlistServiceImpl.findById(info.getId());

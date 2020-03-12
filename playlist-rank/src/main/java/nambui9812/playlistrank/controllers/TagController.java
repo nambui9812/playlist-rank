@@ -3,7 +3,7 @@ package nambui9812.playlistrank.controllers;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import nambui9812.playlistrank.entities.Tag;
 import nambui9812.playlistrank.services.impl.TagServiceImpl;
 
-@RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RestController
 @RequestMapping("/tags")
 public class TagController {
   @Autowired
@@ -78,31 +78,17 @@ public class TagController {
 
   // Create a new tag
   @PostMapping("/")
-  ResponseEntity<Object> createTag(@RequestBody Tag newTag, Authentication authentication) throws Exception {
+  ResponseEntity<Object> createTag(@Valid @RequestBody Tag newTag, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
-    try {
-
-      if (!newTag.getAuthorUsername().equals(authentication.getName())) {
-        res.put("success", false);
-        res.put("message", "Cannot create tag for other person.");
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
-      }
-
-      newTag = tagServiceImpl.createTag(newTag);
-
-    } catch (ConstraintViolationException e) {
-
-      HashMap<String, Object> messages = new HashMap<>();
-      e.getConstraintViolations().stream().forEach((violation) -> {
-        messages.put(violation.getPropertyPath().toString(), violation.getMessage());
-      });
+    if (!newTag.getAuthorUsername().equals(authentication.getName())) {
       res.put("success", false);
-      res.put("messages", messages);
+      res.put("message", "Cannot create tag for other person.");
 
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
+
+    newTag = tagServiceImpl.createTag(newTag);
 
     res.put("success", true);
     res.put("message", "Create a new tag successfully");

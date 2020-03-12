@@ -3,7 +3,7 @@ package nambui9812.playlistrank.controllers;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,24 +71,10 @@ public class WebsiteUserController {
 
   // Create a new user
   @PostMapping("/sign-up")
-  ResponseEntity<Object> createUser(@RequestBody WebsiteUser newUser) throws Exception {
+  ResponseEntity<Object> createUser(@Valid @RequestBody WebsiteUser newUser) {
     HashMap<String, Object> res = new HashMap<>();
 
-    try {
-
-      newUser = websiteUserServiceImpl.createWebsiteUser(newUser);
-
-    } catch (ConstraintViolationException e) {
-
-      HashMap<String, Object> messages = new HashMap<>();
-      e.getConstraintViolations().stream().forEach((violation) -> {
-        messages.put(violation.getPropertyPath().toString(), violation.getMessage());
-      });
-      res.put("success", false);
-      res.put("message", messages);
-
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
-    }
+    newUser = websiteUserServiceImpl.createWebsiteUser(newUser);
 
     res.put("success", true);
     res.put("message", "Create a new user successfully");
@@ -99,7 +85,7 @@ public class WebsiteUserController {
 
   // Update a user
   @PutMapping("/update-info")
-  ResponseEntity<Object> updateUser(@RequestBody UpdateWebsiteUserValidation info, Authentication authentication) {
+  ResponseEntity<Object> updateUser(@Valid @RequestBody UpdateWebsiteUserValidation info, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
     WebsiteUser existing = websiteUserServiceImpl.findById(info.getId());
@@ -129,7 +115,7 @@ public class WebsiteUserController {
 
   // Follow a person
   @PutMapping("/follow-user")
-  ResponseEntity<Object> followUser(@RequestBody FollowWebsiteUserValidation info, Authentication authentication) {
+  ResponseEntity<Object> followUser(@Valid @RequestBody FollowWebsiteUserValidation info, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
     WebsiteUser existing = websiteUserServiceImpl.findById(info.getId());
