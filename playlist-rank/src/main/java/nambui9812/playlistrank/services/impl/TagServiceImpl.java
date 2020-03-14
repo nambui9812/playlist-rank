@@ -75,6 +75,23 @@ public class TagServiceImpl implements TagService {
   }
 
   @Override
+  public Tag unlikeTag(String username, Tag existing) {
+    ArrayList<String> list = existing.getLikes();
+
+    for (int i = 0; i < list.size(); ++i) {
+      if (list.get(i).equals(username)) {
+        list.remove(i);
+
+        existing.setLikes(list);
+
+        return tagRepository.save(existing);
+      }
+    }
+
+    return existing;
+  }
+
+  @Override
   public Tag dislikeTag(String username, Tag existing) {
     ArrayList<String> list = existing.getDislikes();
 
@@ -89,6 +106,23 @@ public class TagServiceImpl implements TagService {
     existing.setDislikes(list);
 
     return tagRepository.save(existing);
+  }
+
+  @Override
+  public Tag undislikeTag(String username, Tag existing) {
+    ArrayList<String> list = existing.getDislikes();
+
+    for (int i = 0; i < list.size(); ++i) {
+      if (list.get(i).equals(username)) {
+        list.remove(i);
+
+        existing.setDislikes(list);
+
+        return tagRepository.save(existing);
+      }
+    }
+
+    return existing;
   }
 
   @Override

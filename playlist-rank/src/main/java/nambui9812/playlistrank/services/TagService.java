@@ -20,7 +20,11 @@ public interface TagService {
 
   Tag likeTag(String username, Tag existing);
 
+  Tag unlikeTag(String username, Tag existing);
+
   Tag dislikeTag(String username, Tag existing);
+
+  Tag undislikeTag(String username, Tag existing);
 
   void updateTagPopular();
 
