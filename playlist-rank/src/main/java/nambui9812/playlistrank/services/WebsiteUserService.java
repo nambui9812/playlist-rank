@@ -20,5 +20,7 @@ public interface WebsiteUserService {
 
   WebsiteUser followWebsiteUser(WebsiteUser existing, WebsiteUser follow);
 
+  WebsiteUser unfollowWebsiteUser(WebsiteUser existing, WebsiteUser follow);
+
   void deleteWebsiteUser(String id);
 }

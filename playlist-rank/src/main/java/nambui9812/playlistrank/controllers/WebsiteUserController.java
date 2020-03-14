@@ -118,7 +118,7 @@ public class WebsiteUserController {
   ResponseEntity<Object> followUser(@Valid @RequestBody FollowWebsiteUserValidation info, Authentication authentication) {
     HashMap<String, Object> res = new HashMap<>();
 
-    WebsiteUser existing = websiteUserServiceImpl.findById(info.getId());
+    WebsiteUser existing = websiteUserServiceImpl.findByUsername(info.getUsername());
 
     WebsiteUser follow = websiteUserServiceImpl.findByUsername(info.getFollowUsername());
 
@@ -147,6 +147,45 @@ public class WebsiteUserController {
 
     res.put("success", true);
     res.put("message", "Follow other user successfully.");
+    res.put("user", updated);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
+  // Unfollow a person
+  @PutMapping("/unfollow-user")
+  ResponseEntity<Object> unfollowUser(@Valid @RequestBody FollowWebsiteUserValidation info, Authentication authentication) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    WebsiteUser existing = websiteUserServiceImpl.findByUsername(info.getUsername());
+
+    WebsiteUser follow = websiteUserServiceImpl.findByUsername(info.getFollowUsername());
+
+    if (follow == null) {
+      res.put("success", false);
+      res.put("message", "Invalid follow's username.");
+      
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    // Username from id in info
+    String fromExisting = existing.getUsername();
+
+    // Username from token
+    String fromAuth = authentication.getName();
+
+    if (!fromExisting.equals(fromAuth)) {
+
+      res.put("success", false);
+      res.put("message", "Unauthorization for unfollowing user.");
+
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
+    }
+
+    WebsiteUser updated = websiteUserServiceImpl.followWebsiteUser(existing, follow);
+
+    res.put("success", true);
+    res.put("message", "Unfollow other user successfully.");
     res.put("user", updated);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);

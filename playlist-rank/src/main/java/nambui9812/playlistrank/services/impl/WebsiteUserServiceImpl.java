@@ -1,5 +1,6 @@
 package nambui9812.playlistrank.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,11 +83,59 @@ public class WebsiteUserServiceImpl implements WebsiteUserService {
 
   @Override
   public WebsiteUser followWebsiteUser(WebsiteUser existing, WebsiteUser follow) {
-    existing.getFollowingList().add(follow.getUsername());
-    follow.getFollowerList().add(existing.getUsername());
+    boolean contain = false;
+    ArrayList<String> followingList = existing.getFollowingList();
+    ArrayList<String> followerList = follow.getFollowerList();
 
-    websiteUserRepository.save(existing);
-    websiteUserRepository.save(follow);
+    for (int i = 0; i < followingList.size(); ++i) {
+      if (followingList.get(i).equals(follow.getUsername())) {
+        contain = true;
+        break;
+      }
+    }
+
+    if (!contain) {
+      followingList.add(follow.getUsername());
+      existing.setFollowingList(followingList);
+
+      followerList.add(existing.getUsername());
+      follow.setFollowerList(followerList);
+
+      websiteUserRepository.save(existing);
+      websiteUserRepository.save(follow);
+    }
+
+    return existing;
+  }
+
+  @Override
+  public WebsiteUser unfollowWebsiteUser(WebsiteUser existing, WebsiteUser follow) {
+    boolean contain = false;
+    ArrayList<String> followingList = existing.getFollowingList();
+    ArrayList<String> followerList = follow.getFollowerList();
+
+    for (int i = 0; i < followingList.size(); ++i) {
+      if (followingList.get(i).equals(follow.getUsername())) {
+        contain = true;
+        followingList.remove(i);
+        break;
+      }
+    }
+
+    if (contain) {
+      for (int i = 0; i < followerList.size(); ++i) {
+        if (followerList.get(i).equals(existing.getUsername())) {
+          followerList.remove(i);
+          break;
+        }
+      }
+
+      existing.setFollowingList(followingList);
+      follow.setFollowerList(followerList);
+
+      websiteUserRepository.save(existing);
+      websiteUserRepository.save(follow);
+    }
 
     return existing;
   }
