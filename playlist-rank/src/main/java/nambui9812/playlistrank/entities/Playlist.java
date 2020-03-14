@@ -12,7 +12,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import nambui9812.playlistrank.entities.WebsiteTrack;
+//import nambui9812.playlistrank.entities.WebsiteTrack;
 
 @Data
 @Document(collection = "playlists")
@@ -32,7 +32,7 @@ public class Playlist {
   private ArrayList<String> shares = new ArrayList<>();   // List of users's username who shares this playlist
   
   @NotEmpty(message = "Playlist must have at least one author - name track pair.")
-  private ArrayList<@NotNull @Valid WebsiteTrack> tracks;   // List of name and author of the track
+  private ArrayList<@Valid WebsiteTrack> tracks;   // List of name and author of the track
 
   private float popular = 0f;
 

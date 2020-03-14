@@ -117,6 +117,23 @@ public class PlaylistServiceImpl implements PlaylistService {
   }
 
   @Override
+  public Playlist unlovePlaylist(String username, Playlist existing) {
+    ArrayList<String> list = existing.getLoves();
+
+    for (int i = 0; i < list.size(); ++i) {
+      if (list.get(i).equals(username)) {
+        list.remove(i);
+
+        existing.setLoves(list);
+
+        return playlistRepository.save(existing);
+      }
+    }
+
+    return existing;
+  }
+
+  @Override
   public void updatePlaylistPopular() {
     List<Playlist> playlists = playlistRepository.findAll();
 

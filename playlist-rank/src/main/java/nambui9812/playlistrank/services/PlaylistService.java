@@ -21,6 +21,8 @@ public interface PlaylistService {
   Playlist sharePlaylist(String authorUsername, Playlist existing);
 
   Playlist lovePlaylist(String username, Playlist existing);
+  
+  Playlist unlovePlaylist(String username, Playlist existing);
 
   void updatePlaylistPopular();
 

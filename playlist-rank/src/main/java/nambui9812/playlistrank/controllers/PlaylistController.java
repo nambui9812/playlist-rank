@@ -168,6 +168,29 @@ public class PlaylistController {
     return ResponseEntity.status(HttpStatus.OK).body(res);
   }
 
+  // Unlove a playlist
+  @PutMapping("/unlove/{id}")
+  ResponseEntity<Object> unlovePlaylist(@PathVariable String id, Authentication authentication) {
+    HashMap<String, Object> res = new HashMap<>();
+
+    Playlist existing = playlistServiceImpl.findById(id);
+
+    if (existing == null) {
+      res.put("success", false);
+      res.put("message", "Cannot unlove an invalid playlist.");
+
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+    }
+
+    Playlist unloved = playlistServiceImpl.lovePlaylist(authentication.getName(), existing);
+
+    res.put("success", true);
+    res.put("message", "Unlove a playlist successfully.");
+    res.put("playlist", unloved);
+
+    return ResponseEntity.status(HttpStatus.OK).body(res);
+  }
+
   // Delete a playlist
   @DeleteMapping("/{id}")
   ResponseEntity<Object> deletePlaylist(@PathVariable String id, Authentication authentication) {
