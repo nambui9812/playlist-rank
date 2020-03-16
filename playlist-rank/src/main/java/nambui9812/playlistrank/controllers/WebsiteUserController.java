@@ -1,5 +1,6 @@
 package nambui9812.playlistrank.controllers;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class WebsiteUserController {
     List<WebsiteUser> users = websiteUserServiceImpl.findAll();
 
     res.put("success", true);
-    res.put("message", "Get all users successfully.");
+    res.put("messages", Arrays.asList("Get all users successfully."));
     res.put("users", users);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -47,7 +48,7 @@ public class WebsiteUserController {
     user.setPassword(null);
 
     res.put("success", true);
-    res.put("message", "Get user successfully");
+    res.put("messages", Arrays.asList("Get user successfully."));
     res.put("user", user);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -63,7 +64,7 @@ public class WebsiteUserController {
     user.setPassword(null);
 
     res.put("success", true);
-    res.put("message", "Get user successfully");
+    res.put("messages", Arrays.asList("Get user successfully."));
     res.put("user", user);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -77,7 +78,7 @@ public class WebsiteUserController {
     newUser = websiteUserServiceImpl.createWebsiteUser(newUser);
 
     res.put("success", true);
-    res.put("message", "Create a new user successfully");
+    res.put("messages", Arrays.asList("Create a new user successfully."));
     res.put("user", newUser);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(res);
@@ -99,7 +100,7 @@ public class WebsiteUserController {
     if (!fromExisting.equals(fromAuth)) {
 
       res.put("success", false);
-      res.put("message", "Unauthorization for updating user.");
+      res.put("messages", Arrays.asList("Unauthorization for updating user."));
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
@@ -107,7 +108,7 @@ public class WebsiteUserController {
     WebsiteUser updated = websiteUserServiceImpl.updateWebsiteUser(existing, info);
 
     res.put("success", true);
-    res.put("message", "Update user info successfully.");
+    res.put("messages", Arrays.asList("Update user info successfully."));
     res.put("user", updated);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -124,7 +125,7 @@ public class WebsiteUserController {
 
     if (follow == null) {
       res.put("success", false);
-      res.put("message", "Invalid follow's username.");
+      res.put("messages", Arrays.asList("Invalid follow's username."));
       
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -138,7 +139,7 @@ public class WebsiteUserController {
     if (!fromExisting.equals(fromAuth)) {
 
       res.put("success", false);
-      res.put("message", "Unauthorization for following user.");
+      res.put("messages", Arrays.asList("Unauthorization for following user."));
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
@@ -146,7 +147,7 @@ public class WebsiteUserController {
     WebsiteUser updated = websiteUserServiceImpl.followWebsiteUser(existing, follow);
 
     res.put("success", true);
-    res.put("message", "Follow other user successfully.");
+    res.put("messages", Arrays.asList("Follow other user successfully."));
     res.put("user", updated);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -163,7 +164,7 @@ public class WebsiteUserController {
 
     if (follow == null) {
       res.put("success", false);
-      res.put("message", "Invalid follow's username.");
+      res.put("messages", Arrays.asList("Invalid follow's username."));
       
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -177,7 +178,7 @@ public class WebsiteUserController {
     if (!fromExisting.equals(fromAuth)) {
 
       res.put("success", false);
-      res.put("message", "Unauthorization for unfollowing user.");
+      res.put("messages", Arrays.asList("Unauthorization for unfollowing user."));
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
@@ -185,7 +186,7 @@ public class WebsiteUserController {
     WebsiteUser updated = websiteUserServiceImpl.followWebsiteUser(existing, follow);
 
     res.put("success", true);
-    res.put("message", "Unfollow other user successfully.");
+    res.put("messages", Arrays.asList("Unfollow other user successfully."));
     res.put("user", updated);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -200,7 +201,7 @@ public class WebsiteUserController {
 
     if (existing == null) {
       res.put("success", false);
-      res.put("message", "Cannot delete an invalid user.");
+      res.put("messages", Arrays.asList("Cannot delete an invalid user."));
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -214,7 +215,7 @@ public class WebsiteUserController {
     if (!fromExisting.equals(fromAuth)) {
 
       res.put("success", false);
-      res.put("message", "Unauthorization for deleting user.");
+      res.put("messages", Arrays.asList("Unauthorization for deleting user."));
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
@@ -222,7 +223,7 @@ public class WebsiteUserController {
     websiteUserServiceImpl.deleteWebsiteUser(id);
 
     res.put("success", true);
-    res.put("message", "Delete user successfully.");
+    res.put("messages", Arrays.asList("Delete user successfully."));
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
   }

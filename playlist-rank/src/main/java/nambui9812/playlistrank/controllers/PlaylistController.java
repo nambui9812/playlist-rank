@@ -1,5 +1,6 @@
 package nambui9812.playlistrank.controllers;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class PlaylistController {
     List<Playlist> playlists = playlistServiceImpl.findAll();
 
     res.put("success", true);
-    res.put("message", "Get all playlists successfully.");
+    res.put("messages", Arrays.asList("Get all playlists successfully."));
     res.put("playlists", playlists);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -44,7 +45,7 @@ public class PlaylistController {
     Playlist playlist = playlistServiceImpl.findById(id);
 
     res.put("success", true);
-    res.put("message", "Get playlist successfully.");
+    res.put("messages", Arrays.asList("Get playlist successfully."));
     res.put("playlist", playlist);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -58,7 +59,7 @@ public class PlaylistController {
     List<Playlist> playlists = playlistServiceImpl.findByAuthorUsername(authorUsername);
 
     res.put("success", true);
-    res.put("message", "Get all playlists of a user successfully.");
+    res.put("messages", Arrays.asList("Get all playlists of a user successfully."));
     res.put("playlists", playlists);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -71,7 +72,7 @@ public class PlaylistController {
 
     if (!newPlaylist.getAuthorUsername().equals(authentication.getName())) {
       res.put("success", false);
-      res.put("message", "Cannot create playlist for other person.");
+      res.put("messages", Arrays.asList("Cannot create playlist for other person."));
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
@@ -79,7 +80,7 @@ public class PlaylistController {
     newPlaylist = playlistServiceImpl.createPlaylist(newPlaylist);
 
     res.put("success", true);
-    res.put("message", "Create a new playlist successfully");
+    res.put("messages", Arrays.asList("Create a new playlist successfully"));
     res.put("playlist", newPlaylist);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(res);
@@ -94,14 +95,14 @@ public class PlaylistController {
 
     if (existing == null) {
       res.put("success", false);
-      res.put("message", "Cannot share an invalid playlist.");
+      res.put("messages", Arrays.asList("Cannot share an invalid playlist."));
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
     if (existing.getAuthorUsername().equals(authentication.getName())) {
       res.put("success", false);
-      res.put("message", "Cannot share your own playlist.");
+      res.put("messages", Arrays.asList("Cannot share your own playlist."));
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -109,7 +110,7 @@ public class PlaylistController {
     Playlist shared = playlistServiceImpl.sharePlaylist(authentication.getName(), existing);
 
     res.put("success", true);
-    res.put("message", "Share playlist successfully.");
+    res.put("messages", Arrays.asList("Share playlist successfully."));
     res.put("playlist", shared);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -124,14 +125,14 @@ public class PlaylistController {
 
     if (existing == null) {
       res.put("success", false);
-      res.put("message", "Cannot update an invalid playlist.");
+      res.put("messages", Arrays.asList("Cannot update an invalid playlist."));
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
     if (!existing.getAuthorUsername().equals(authentication.getName())) {
       res.put("success", false);
-      res.put("message", "Cannot update a playlist that not belong to you.");
+      res.put("messages", Arrays.asList("Cannot update a playlist that not belong to you."));
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -139,7 +140,7 @@ public class PlaylistController {
     Playlist updated = playlistServiceImpl.updateDescription(existing, info);
 
     res.put("success", true);
-    res.put("message", "Update description successfully.");
+    res.put("messages", Arrays.asList("Update description successfully."));
     res.put("playlist", updated);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -154,7 +155,7 @@ public class PlaylistController {
 
     if (existing == null) {
       res.put("success", false);
-      res.put("message", "Cannot love an invalid playlist.");
+      res.put("messages", Arrays.asList("Cannot love an invalid playlist."));
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -162,7 +163,7 @@ public class PlaylistController {
     Playlist loved = playlistServiceImpl.lovePlaylist(authentication.getName(), existing);
 
     res.put("success", true);
-    res.put("message", "Love a playlist successfully.");
+    res.put("messages", Arrays.asList("Love a playlist successfully."));
     res.put("playlist", loved);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -177,7 +178,7 @@ public class PlaylistController {
 
     if (existing == null) {
       res.put("success", false);
-      res.put("message", "Cannot unlove an invalid playlist.");
+      res.put("messages", Arrays.asList("Cannot unlove an invalid playlist."));
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -185,7 +186,7 @@ public class PlaylistController {
     Playlist unloved = playlistServiceImpl.lovePlaylist(authentication.getName(), existing);
 
     res.put("success", true);
-    res.put("message", "Unlove a playlist successfully.");
+    res.put("messages", Arrays.asList("Unlove a playlist successfully."));
     res.put("playlist", unloved);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -200,7 +201,7 @@ public class PlaylistController {
 
     if (existing == null) {
       res.put("success", false);
-      res.put("message", "Cannot delete an invalid playlist.");
+      res.put("messages", Arrays.asList("Cannot delete an invalid playlist."));
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -213,7 +214,7 @@ public class PlaylistController {
 
     if (!fromExisting.equals(fromAuth)) {
       res.put("success", false);
-      res.put("message", "Unauthorization for deleting playlist.");
+      res.put("messages", Arrays.asList("Unauthorization for deleting playlist."));
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
@@ -221,7 +222,7 @@ public class PlaylistController {
     playlistServiceImpl.deletePlaylist(id);
 
     res.put("success", true);
-    res.put("message", "Delete playlist successfully.");
+    res.put("messages", Arrays.asList("Delete playlist successfully."));
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
   }

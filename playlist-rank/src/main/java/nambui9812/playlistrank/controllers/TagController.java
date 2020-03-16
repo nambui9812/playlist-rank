@@ -1,5 +1,6 @@
 package nambui9812.playlistrank.controllers;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class TagController {
     List<Tag> tags = tagServiceImpl.findAll();
 
     res.put("success", true);
-    res.put("message", "Get all tags successfully.");
+    res.put("messages", Arrays.asList("Get all tags successfully."));
     res.put("tags", tags);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -42,7 +43,7 @@ public class TagController {
     HashMap<String, Integer> group = tagServiceImpl.findGroupTagName();
 
     res.put("success", true);
-    res.put("message", "Get group of tags successfully.");
+    res.put("messages", Arrays.asList("Get group of tags successfully."));
     res.put("group", group);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -56,7 +57,7 @@ public class TagController {
     Tag tag = tagServiceImpl.findById(id);
 
     res.put("success", true);
-    res.put("message", "Get tag successfully.");
+    res.put("messages", Arrays.asList("Get tag successfully."));
     res.put("tag", tag);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -70,7 +71,7 @@ public class TagController {
     List<Tag> tags = tagServiceImpl.findByPlaylistId(playlistId);
 
     res.put("success", true);
-    res.put("message", "Get all tags of a playlist successfully.");
+    res.put("messages", Arrays.asList("Get all tags of a playlist successfully."));
     res.put("tags", tags);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -83,7 +84,7 @@ public class TagController {
 
     if (!newTag.getAuthorUsername().equals(authentication.getName())) {
       res.put("success", false);
-      res.put("message", "Cannot create tag for other person.");
+      res.put("messages", Arrays.asList("Cannot create tag for other person."));
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
@@ -91,7 +92,7 @@ public class TagController {
     newTag = tagServiceImpl.createTag(newTag);
 
     res.put("success", true);
-    res.put("message", "Create a new tag successfully");
+    res.put("messages", Arrays.asList("Create a new tag successfully"));
     res.put("tag", newTag);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(res);
@@ -106,7 +107,7 @@ public class TagController {
 
     if (existing == null) {
       res.put("success", false);
-      res.put("message", "Cannot like an invalid tag.");
+      res.put("messages", Arrays.asList("Cannot like an invalid tag."));
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -114,7 +115,7 @@ public class TagController {
     Tag liked = tagServiceImpl.likeTag(authentication.getName(), existing);
 
     res.put("success", true);
-    res.put("message", "Like a tag successfully.");
+    res.put("messages", Arrays.asList("Like a tag successfully."));
     res.put("tag", liked);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -129,7 +130,7 @@ public class TagController {
 
     if (existing == null) {
       res.put("success", false);
-      res.put("message", "Cannot dislike an invalid tag.");
+      res.put("messages", Arrays.asList("Cannot dislike an invalid tag."));
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -137,7 +138,7 @@ public class TagController {
     Tag disliked = tagServiceImpl.dislikeTag(authentication.getName(), existing);
 
     res.put("success", true);
-    res.put("message", "Dislike a tag successfully.");
+    res.put("messages", Arrays.asList("Dislike a tag successfully."));
     res.put("tag", disliked);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -152,7 +153,7 @@ public class TagController {
 
     if (existing == null) {
       res.put("success", false);
-      res.put("message", "Cannot delete an invalid tag.");
+      res.put("messages", Arrays.asList("Cannot delete an invalid tag."));
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -165,7 +166,7 @@ public class TagController {
 
     if (!fromExisting.equals(fromAuth)) {
       res.put("success", false);
-      res.put("message", "Unauthorization for deleting tag.");
+      res.put("messages", Arrays.asList("Unauthorization for deleting tag."));
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
@@ -173,7 +174,7 @@ public class TagController {
     tagServiceImpl.deleteTag(id);
 
     res.put("success", true);
-    res.put("message", "Delete tag successfully.");
+    res.put("messages", Arrays.asList("Delete tag successfully."));
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
   }

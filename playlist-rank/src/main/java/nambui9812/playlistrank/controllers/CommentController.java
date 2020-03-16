@@ -1,5 +1,6 @@
 package nambui9812.playlistrank.controllers;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class CommentController {
     List<Comment> comments = commentServiceImpl.findAll();
 
     res.put("success", true);
-    res.put("message", "Get all coomments successfully.");
+    res.put("messages", Arrays.asList("Get all coomments successfully."));
     res.put("comments", comments);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -43,7 +44,7 @@ public class CommentController {
     Comment comment = commentServiceImpl.findById(id);
 
     res.put("success", true);
-    res.put("message", "Get comment successfully.");
+    res.put("messages", Arrays.asList("Get comment successfully."));
     res.put("comment", comment);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -57,7 +58,7 @@ public class CommentController {
     List<Comment> comments = commentServiceImpl.findByPlaylistId(playlistId);
 
     res.put("success", true);
-    res.put("message", "Get all comments in a playlist successfully.");
+    res.put("messages", Arrays.asList("Get all comments in a playlist successfully."));
     res.put("comments", comments);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -71,7 +72,7 @@ public class CommentController {
     List<Comment> comments = commentServiceImpl.findByToCommentId(toCommentId);
 
     res.put("success", true);
-    res.put("message", "Get all comments response to a comment successfully.");
+    res.put("messages", Arrays.asList("Get all comments response to a comment successfully."));
     res.put("comments", comments);
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
@@ -84,7 +85,7 @@ public class CommentController {
 
     if (!newComment.getAuthorUsername().equals(authentication.getName())) {
       res.put("success", false);
-      res.put("message", "Cannot create comment for other person.");
+      res.put("messages", Arrays.asList("Cannot create comment for other person."));
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
@@ -92,7 +93,7 @@ public class CommentController {
     newComment = commentServiceImpl.createComment(newComment);
 
     res.put("success", true);
-    res.put("message", "Create a new comment successfully");
+    res.put("messages", Arrays.asList("Create a new comment successfully"));
     res.put("commment", newComment);
 
     return ResponseEntity.status(HttpStatus.CREATED).body(res);
@@ -107,7 +108,7 @@ public class CommentController {
 
     if (existing == null) {
       res.put("success", false);
-      res.put("message", "Cannot delete an invalid comment.");
+      res.put("messages", Arrays.asList("Cannot delete an invalid comment."));
 
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
@@ -120,7 +121,7 @@ public class CommentController {
 
     if (!fromExisting.equals(fromAuth)) {
       res.put("success", false);
-      res.put("message", "Unauthorization for deleting comment.");
+      res.put("messages", Arrays.asList("Unauthorization for deleting comment."));
 
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(res);
     }
@@ -128,7 +129,7 @@ public class CommentController {
     commentServiceImpl.deleteComment(existing);
 
     res.put("success", true);
-    res.put("message", "Delete comment successfully.");
+    res.put("messages", Arrays.asList("Delete comment successfully."));
 
     return ResponseEntity.status(HttpStatus.OK).body(res);
   }
