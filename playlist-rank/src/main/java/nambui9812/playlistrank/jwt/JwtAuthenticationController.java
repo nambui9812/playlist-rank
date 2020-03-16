@@ -32,14 +32,18 @@ public class JwtAuthenticationController {
   @Autowired
   private WebsiteUserDetailsServiceImpl websiteUserDetailsServiceImpl;
 
+  // Sign in action
   @PostMapping("/users/sign-in")
   public ResponseEntity<Object> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    // Check username and password from user request
     authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
     HashMap<String, Object> res = new HashMap<>();
 
+    // Get user detail object from username
     final UserDetails userDetails = websiteUserDetailsServiceImpl.loadUserByUsername(authenticationRequest.getUsername());
     
+    // Create token
     final String token = jwtTokenUtil.generateToken(userDetails);
 
     res.put("message", "Sign in successfully.");
@@ -53,8 +57,10 @@ public class JwtAuthenticationController {
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     } catch (DisabledException e) {
+      // Account is disable
       throw new Exception("USER_DISABLED", e);
     } catch (BadCredentialsException e) {
+      // Invalid credential
       throw new Exception("INVALID_CREDENTIALS", e);
     }
   }

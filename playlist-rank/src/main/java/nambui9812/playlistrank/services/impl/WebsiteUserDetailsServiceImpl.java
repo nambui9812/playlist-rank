@@ -24,6 +24,8 @@ public class WebsiteUserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
+
+        // COnvert from WebsiteUser to UserDetails, then return
         return new User(user.getUsername(), user.getPassword(), emptyList());
     }
 }
