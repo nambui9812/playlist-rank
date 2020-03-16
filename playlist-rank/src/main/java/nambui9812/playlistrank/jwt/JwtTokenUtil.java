@@ -1,7 +1,7 @@
 package nambui9812.playlistrank.jwt;
 
 import java.io.Serializable;
-
+import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,11 +12,13 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-
-import static nambui9812.playlistrank.security.SecurityConstants.SECRET;;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenUtil implements Serializable {
+
+  public static final Key SECRET = Keys.secretKeyFor(SignatureAlgorithm.HS512);
   
   private static final long serialVersionUID = -2550185165626007488L;
 
